@@ -1,0 +1,64 @@
+This legacy OpenGL code might be useful for drawing/displaying the 
+physics parts of the assignment.
+
+Remember, this code will have to go into an object's Draw() function
+or
+In the drawScene() function (between gluLookAt() and glutSwapBuffers())  in main.cpp to show.
+
+ -- Line Drawing --
+
+You can draw a line between two points via the below code. 
+This could be useful for visually showing forces, acceleration, velocity, boundaries etc.
+
+The indention isn't needed - it just makes it easier to read.
+
+This example draws a red line between (0, 0, 0) and (1, 1, 1).
+
+glPushMatrix();
+	glBegin(GL_LINES); //note its GL_LINES and not GL_LINE!
+	glColor3f(1, 0, 0); //give the line a colour
+	glVertex3f(0, 0, 0); //line start
+	glVertex3f(1, 1, 1); //line end
+	glEnd();
+glPopMatrix();
+
+This example uses an object's position to draw the positive axis from its center.
+Each 2 points passed in via glVertex3f creates 1 line (so this example has 3 lines in one glBegin()).
+
+glPushMatrix();
+	glBegin(GL_LINES);
+
+		glColor3f(1, 0, 0);
+		glVertex3f(x, y, z); //uses the game objects position values
+		glVertex3f(x + 3, y, z); //positive x axis
+
+		glColor3f(0, 1, 0); //note the colour change per line
+		glVertex3f(x, y, z);
+		glVertex3f(x, y + 3, z); //positive y axis
+
+		glColor3f(1, 0, 1);
+		glVertex3f(x, y, z);
+		glVertex3f(x, y, z + 3); //positive z axis
+	glEnd();
+glPopMatrix();
+
+-- Debug Object Drawing --
+
+If you want to place a wireframe object around an object (perhaps to show a collider).
+Choose whatever radius/size value you need to make the debug object bigger or smaller.
+This would be done seperate to the push and pop you have for the normal objects drawing.
+
+//normal objects push/pop drawing code here first
+
+glPushMatrix();
+	glTranslatef(x, y, z); //go the the game objects position
+	glColor3f(1, 0, 1); //make it magneta for easy debug testing
+	glutWireSphere(radius, 10, 10);  //where radius is a float
+	//or
+	//glutWireCube(size); //where size is a float
+glPopMatrix();
+
+-- Colour changes --
+
+You may want to change the colour of an object when something happens (like a collision).
+This can be done by changing the public colour variables of the object directly.
