@@ -43,6 +43,9 @@ void Sphere::Update(float deltaTime)
 		position.y += moveSpeed * deltaTime;
 	if (GameObject::specialKeys[GLUT_KEY_DOWN] == true)
 		position.y -= moveSpeed * deltaTime;
+	 
+
+
 
 
 }

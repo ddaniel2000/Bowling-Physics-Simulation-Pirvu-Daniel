@@ -30,8 +30,8 @@ void Gutter::Draw()
 	glColor3f(colour.r, colour.g, colour.b);
 	//glRotatef(45, 1.0f, 2, 0);
 	glScalef(0.2, 0.5, 40);
-	//glutSolidCube(size);
-	glutWireCube(size); //- if you'd rather see through it
+	glutSolidCube(size);
+	//glutWireCube(size); //- if you'd rather see through it
 	glPopMatrix();
 }
 
