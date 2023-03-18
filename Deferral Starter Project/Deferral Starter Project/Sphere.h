@@ -11,13 +11,30 @@ public:
 	// -- variables --
 	float radius;
 	float moveSpeed;
+	float mass;
+	glm::vec3 newPosition;
+	glm::vec3 acceleration;
+	glm::vec3 velocity;
+	glm::vec3 newVelocity;
 	float force;
+	float drag;
+
+	//variable for getting position, velocity ,mass and radius to collider
+	//SphrCollide* collider;
+
+	glm::vec3 totalForce;
+	glm::vec3 newTotalForce;
 
 	// -- constructors/destructors --
 	Sphere(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - radius 1 - move speed - 1)
 	Sphere(glm::vec3 pos, float _radius, float _moveSpeed);  //pass in a position, radius and movespeed
-	Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed); //pass in a position, colour, radius and move speed
+	Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed, float _mass); //pass in a position, colour, radius, move speed and mass
 	~Sphere() {}; //default destructor
+
+	void CalculateForces();
+
+	//SphrCollide* GetCollider();
+	
 
 	// -- functions -- 
 	//Need to give definions to GameObject's pure virtual functions

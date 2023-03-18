@@ -51,7 +51,7 @@ void setup(void)
 
 
 	//constructor - position, colour, radius, moveSpeed
-	GameObject* sphere1 = new Sphere(glm::vec3(-1, 0, -1), glm::vec3(0, 0, 1), 1.5f, 10.0f); 
+	GameObject* sphere1 = new Sphere(glm::vec3(-1, 0, -1), glm::vec3(0, 0, 1), 1.5f, 10.0f, 1.0f);
 	
 	//Bowling Lane ---
 	objects.push_back(bowling_lane);
@@ -70,7 +70,7 @@ void setup(void)
 //Drawing
 void drawScene()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
 
 	// Position the objects for viewing
@@ -136,6 +136,8 @@ void CleanUp()
 	}
 	objects.clear();
 }
+
+
 
 // Keyboard input processing functions 
 void keyInputDown(unsigned char key, int x, int y)
