@@ -22,6 +22,11 @@ GameObject::GameObject(glm::vec3 pos, glm::vec3 col)
 	colour = col;
 }
 
+//function for getting gameobjects collider with variables for collision check
+Collider* GameObject::GetCollider()
+{
+	return nullptr;
+}
 GameObject::~GameObject()
 {
 }

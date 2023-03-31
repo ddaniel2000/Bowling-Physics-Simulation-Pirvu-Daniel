@@ -10,13 +10,20 @@
 #include "Bowling_Lane.h"
 #include "Gutter.h"
 
+#include "Collider.h"
+#include "Sphere_Collider.h"
+#include "AABB_Collider.h"
+#include "Collision_Calculations.h"
 
 using namespace std;
 
 float camX = 0.0f;
 float camY = 0.0f;
 float camZ = 5.0f;
+float camZTest= 0.0f;
 
+int mouseX;
+int mouseY;
 
 /*
 	MAKE SURE TO READ THE "HELPFUL DRAWING CODE.TXT" FILE AS PART OF THIS PROJECT TOO!
@@ -35,57 +42,121 @@ void setup(void)
 	//Create objects and place them in the objects vector
 	//If they aren't in the objects vector, they will not be drawn / updated!
 
-	//constructor - position and size only
-	//GameObject* cube1 = new Cube(glm::vec3(5, 0, 0), 2); 
-	//default constructor used
-	//GameObject* cube2 = new Cube;
-	//constructor - position, colour, size
-	//GameObject* cube3 = new Cube(glm::vec3(2, 2, -2), glm::vec3(0, 1, 0), 0.5f); 	
+	GameObject* sphere1 = new Sphere(glm::vec3(0, 0, 0), glm::vec3(0, 1, 1), 0.5f, 10.0f, 0.3f);
+	GameObject* cube2 = new Cube(glm::vec3(-1, 0, 0), glm::vec3(0, 1, 1), 1.0f);
 
 	//Bowling Lane -- Constructor - position, color, size
-	GameObject* bowling_lane = new Bowling_Lane(glm::vec3(0, -1, 0), glm::vec3(0, 1, 0), 0.2f);
+	GameObject* bowling_lane = new Bowling_Lane(glm::vec3(0, -1, 0), glm::vec3(0, 1, 0), 0.2f, 20.0f, 1.0f, 100.0f);
 
 	// Gutter -- Constructor - position, color, size
 	GameObject* gutter1 = new Gutter(glm::vec3(1.3, -0.4, 0), glm::vec3(1, 1, 1), 1.0f);
 	GameObject* gutter2 = new Gutter(glm::vec3(-1.3, -0.4, 0), glm::vec3(1, 1, 1), 1.0f);
 
-
-	//constructor - position, colour, radius, moveSpeed
-	GameObject* sphere1 = new Sphere(glm::vec3(-1, 0, -1), glm::vec3(0, 0, 1), 1.5f, 10.0f, 1.0f);
 	
+	//constructor - position, colour, radius, moveSpeed
+	objects.push_back(cube2);
+	objects.push_back(sphere1);
 	//Bowling Lane ---
 	objects.push_back(bowling_lane);
 	//Gutter --
 	objects.push_back(gutter1);
 	objects.push_back(gutter2);
 
-	//objects.push_back(cube1);
-	//objects.push_back(cube2);
-	//objects.push_back(cube3);
-	
 
-	objects.push_back(sphere1);
 }
 
 //Drawing
 void drawScene()
 {
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
+
+
 
 	// Position the objects for viewing
 	gluLookAt(
 		camX, camY, camZ, // - eye
-		camX, camY, 0.0,  // - center
+		camX, camY, camZTest,  // - center
 		0.0, 1.0, 0.0); // - up
 
 	//Draw all our game objects
 	for (int i = 0; i < objects.size(); ++i)
 	{
+
 		objects[i]->Draw();
 	}
 
 	glutSwapBuffers();
+}
+
+void CameraMovement()
+{
+	// Move Camera
+	if (GameObject::keys['w'] == true)
+	{
+		camZ -= 0.1f;
+		camZTest -= 0.1f;
+	}
+	if (GameObject::keys['a'] == true)
+	{
+		camX -= 0.1f;
+	}
+	if (GameObject::keys['s'] == true)
+	{
+		camZ += 0.1f;
+		camZTest += 0.1f;
+	}
+	if (GameObject::keys['d'] == true)
+	{
+		camX += 0.1f;
+	}
+}
+
+void Objects_Passed_To_CollideCheck()
+{
+	Collision_Calculations Collision;
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (i == j)
+			{
+				//std::cout << " NULL " << std::endl;
+			}
+			else
+			{
+				if (static_cast<Sphere*>(objects[i]) && static_cast<Bowling_Lane*>(objects[j]))
+				{
+					Collision.Sphere_AABB(objects[i], objects[j]);
+					//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
+				}
+				if (static_cast<Sphere*>(objects[i]) && static_cast<Cube*>(objects[j]))
+				{
+					Collision.Sphere_AABB(objects[i], objects[j]);
+					//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
+				}
+				if (static_cast<Cube*>(objects[i]) && static_cast<Sphere*>(objects[j]))
+				{
+
+				}
+				if (static_cast<Bowling_Lane*>(objects[i]) && static_cast<Sphere*>(objects[j]))
+				{
+
+				}
+				if (static_cast<Cube*>(objects[i]) && static_cast<Bowling_Lane*>(objects[j]))
+				{
+					Collision.AABB_AABB(objects[i], objects[j]);
+				}
+				if (static_cast<Bowling_Lane*>(objects[i]) && static_cast<Cube*>(objects[j]))
+				{
+					
+				}
+			}
+			
+		}
+	}
 }
 
 //Called when nothing else is happening (such as rendering)
@@ -96,28 +167,18 @@ void idle()
 	newTimeSinceStart = glutGet(GLUT_ELAPSED_TIME);
 
 	float deltaTime = (newTimeSinceStart - oldTimeSinceStart) / 1000.0f;
-	//cout << "Delta Time (seconds): " << deltaTime << endl; - if you want to check the delta time
+	//cout << "Delta Time (seconds): " << deltaTime << endl; //- if you want to check the delta time
 
-	// Move Camera
-	if (GameObject::keys['w'] == true)
-	{
-		camZ -= 0.1f;
-	}
-	if (GameObject::keys['a'] == true)
-	{
-		camX -= 0.1f;
-	}
-	if (GameObject::keys['s'] == true)
-	{
-		camZ += 0.1f;
-	}
-	if (GameObject::keys['d'] == true)
-	{
-		camX += 0.1f;
-	}
+	Objects_Passed_To_CollideCheck();
 
-	
-	
+	//if( (static_cast<Bowling_Lane*>(objects[2])) && (static_cast<Cube*>(objects[0])) )
+	//{
+	//	Collision.AABB_AABB(objects[2], objects[0]);
+	//}
+
+
+	CameraMovement();
+
 	//Update all our game objects
 	for (int i = 0; i < objects.size(); ++i)
 	{
@@ -125,6 +186,7 @@ void idle()
 	}
 	glutPostRedisplay();
 }
+
 
 //Delete any memory gotten from the new keyword
 //Is only called when the ESC key is used to leave the game
@@ -179,7 +241,6 @@ void keySpecialUp(int key, int x, int y)
 }
 
 
-
 //OpenGL window reshape
 void resize(int w, int h)
 {
@@ -213,6 +274,7 @@ int main(int argc, char** argv)
 	glutSpecialFunc(keySpecialDown);
 	glutSpecialUpFunc(keySpecialUp);
 	glutIdleFunc(idle);
+
 
 	glewExperimental = GL_TRUE;
 	glewInit();

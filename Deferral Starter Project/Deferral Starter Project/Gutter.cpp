@@ -29,7 +29,7 @@ void Gutter::Draw()
 	glTranslatef(position.x, position.y, position.z);
 	glColor3f(colour.r, colour.g, colour.b);
 	//glRotatef(45, 1.0f, 2, 0);
-	glScalef(0.2, 0.5, 40);
+	glScalef(0.2, 0.5, 40.0);
 	glutSolidCube(size);
 	//glutWireCube(size); //- if you'd rather see through it
 	glPopMatrix();
@@ -62,5 +62,6 @@ void Gutter::Update(float deltaTime)
 
 
 	}
+	
 }
 

@@ -6,6 +6,9 @@
 #include <map>
 #include "glm/glm.hpp"
 
+#include "Collider.h"
+
+
 //A basic abstract class that all game objects in the scene are based off
 // abstract = We never will make a direct instance of GameObject but will make classes inherit from it
 class GameObject
@@ -23,6 +26,8 @@ public:
 	GameObject(glm::vec3 pos); //pass in a position (no colour passed in so defaults to white)
 	GameObject(glm::vec3 pos, glm::vec3 col); //pass in a position, colour
 	~GameObject(); //default destructor
+
+	virtual Collider* GetCollider();
 
 	// -- functions -- 
 	//pure virtual so all classes that derive from this one need to include a definion for these

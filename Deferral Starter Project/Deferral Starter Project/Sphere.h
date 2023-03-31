@@ -1,6 +1,9 @@
 #pragma once
 
 #include "GameObject.h"
+#include "Sphere_Collider.h"
+#include "Collision_Forces.h"
+
 
 
 //A basic sphere class derived from a game object
@@ -19,8 +22,7 @@ public:
 	float force;
 	float drag;
 
-	//variable for getting position, velocity ,mass and radius to collider
-	//SphrCollide* collider;
+	Sphere_Collider* collider;
 
 	glm::vec3 totalForce;
 	glm::vec3 newTotalForce;
@@ -31,13 +33,14 @@ public:
 	Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed, float _mass); //pass in a position, colour, radius, move speed and mass
 	~Sphere() {}; //default destructor
 
-	void CalculateForces();
-
-	//SphrCollide* GetCollider();
+	Sphere_Collider* GetCollider();//getting variables for collision calculation class
 	
-
 	// -- functions -- 
 	//Need to give definions to GameObject's pure virtual functions
 	virtual void Draw();
 	virtual void Update(float deltaTime);
+
+	void Movement(float _deltaTime);
+	void CalculateForces(float _deltaTime);
+	void ResetForce();
 };
