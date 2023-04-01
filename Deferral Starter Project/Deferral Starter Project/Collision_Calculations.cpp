@@ -40,7 +40,11 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 	if (collisionX && collisionY && collisionZ)
 	{
 		b->colour = glm::vec3(1, 0, 0);
+		/*if (dynamic_cast<Bowling_Lane*>(a) && dynamic_cast<Cube*>(b))
+		{
 
+			std::cout << " BOWLING_LANE - Cube" << std::endl;
+		}*/
 	}
 	else
 	{
@@ -102,19 +106,48 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 	// Check if the distance is less than or equal to the radius of the sphere
 	if (distance <= c->radius)
 	{
-		a->colour = glm::vec3(1, 0, 0);
-		if (static_cast<Sphere*>(a) && static_cast<Cube*>(b))
+		
+		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Cube*>(b))
 		{
-			std::cout << " SPHERE - CUBE" << std::endl;
+			/*a->colour = glm::vec3(1, 0, 0);*/
+			//if the sphere collide with any of the cubes
+			//The sphere position is set to 0,0,0
+			//The velocity on z axis is 0
+			a->position = glm::vec3(0, 0, 0);
+			dynamic_cast<Sphere*>(a)->velocity.z = 0;
+			std::cout << " SPHERE - Cube" << std::endl;
 		}
-		if (static_cast<Sphere*>(a) && static_cast<Bowling_Lane*>(b))
+		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Bowling_Lane*>(b))
 		{
+			/*b->colour = glm::vec3(1, 0, 0);*/
 			std::cout << " SPHERE - BOWLING_LANE" << std::endl;
+			if (GameObject::keys[32] == true)
+			{
+				dynamic_cast<Sphere*>(a)->totalForce.y += 30;
+			}
+			//push the sphere back up 
+			dynamic_cast<Sphere*>(a)->velocity.y -= dynamic_cast<Sphere*>(a)->velocity.y - dynamic_cast<Sphere*>(a)->gravity.y;
+		}
+		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Gutter*>(b))
+		{
+			/*b->colour = glm::vec3(1, 0, 0);*/
+			std::cout << " SPHERE - GUTTER" << std::endl;
+
+			//push the sphere back up 
+			if (dynamic_cast<Gutter*>(b) && b->position.x > 1)
+			{
+				dynamic_cast<Sphere*>(a)->velocity.x -= (dynamic_cast<Sphere*>(a)->velocity.x) + 2;
+			}
+			if (dynamic_cast<Gutter*>(b) && b->position.x < 1)
+			{
+				dynamic_cast<Sphere*>(a)->velocity.x += (dynamic_cast<Sphere*>(a)->velocity.x) + 2;
+			}
 		}
 	}
 	else
 	{
-		a->colour = glm::vec3(0, 1, 1);
+	/*	a->colour = glm::vec3(0, 1, 1);
+		b->colour = glm::vec3(0, 1, 1);*/
 		return;
 	}
 
@@ -146,16 +179,7 @@ void Collision_Calculations::AABB_Sphere(GameObject* a, GameObject* b)
 	if (distance <= d->radius)
 	{
 		b->colour = glm::vec3(1, 0, 0);
-		if (static_cast<Cube*>(a) && static_cast<Sphere*>(b))
-		{
-			std::cout << " CUBE - SPHERE" << "  closest:" << c->sizeX << " " << c->sizeY << " " << c->sizeZ << std::endl;
-			
-		}
-		if (static_cast<Bowling_Lane*>(a) && static_cast<Sphere*>(b))
-		{
-			std::cout << " BOWLING_LANE - SPHERE" << "  closest:" << c->sizeX << " " << c->sizeY << " " << c->sizeZ << std::endl;
-
-		}
+		
 	}
 	else
 	{

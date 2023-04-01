@@ -25,6 +25,7 @@ Cube::Cube(glm::vec3 pos, glm::vec3 col, float _size):
 	sizeZ = _size;
 	position = pos;
 	
+	
 	collider = new AABB_Collider(size,position);
 }
 
@@ -41,9 +42,9 @@ void Cube::Draw()
 		//glRotatef(45, 1.0f, 2, 0);
 		//glScalef(1, 2.5, 1);
 		glutSolidCube(size);
+	
 		//glutWireCube(size); //- if you'd rather see through it
 	glPopMatrix();
-
 
 
 }
@@ -52,23 +53,4 @@ void Cube::Update(float deltaTime)
 {
 	//Cubes are static at the moment so nothing changes for them
 	collider->position = position;
-
-	
-
-	if (GameObject::keys['i'] == true)
-	{
-		position.y += 0.1f;
-	}
-	if (GameObject::keys['k'] == true)
-	{
-		position.y -= 0.1f;
-	}
-	if (GameObject::keys['j'] == true)
-	{
-		position.x -= 0.1f;
-	}
-	if (GameObject::keys['l'] == true)
-	{
-		position.x += 0.1f;
-	}
 }

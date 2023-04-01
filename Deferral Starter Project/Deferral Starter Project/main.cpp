@@ -42,20 +42,36 @@ void setup(void)
 	//Create objects and place them in the objects vector
 	//If they aren't in the objects vector, they will not be drawn / updated!
 
-	GameObject* sphere1 = new Sphere(glm::vec3(0, 0, 0), glm::vec3(0, 1, 1), 0.5f, 10.0f, 0.3f);
-	GameObject* cube2 = new Cube(glm::vec3(-1, 0, 0), glm::vec3(0, 1, 1), 1.0f);
+	GameObject* sphere1 = new Sphere(glm::vec3(0, 0, 0), glm::vec3(0, 1, 1), 0.5f, 40.0f, 0.3f);
+	GameObject* cube1 = new Cube(glm::vec3(-1, -0.6, -10), glm::vec3(1, 0, 0), 0.3f);
+	GameObject* cube2 = new Cube(glm::vec3(0, -0.6, -15), glm::vec3(1, 0, 0), 0.3f);
+	GameObject* cube3 = new Cube(glm::vec3(1, -0.6, -20), glm::vec3(1, 0, 0), 0.3f);
+	GameObject* cube4 = new Cube(glm::vec3(-1, -0.6, -25), glm::vec3(1, 0, 0), 0.3f);
+	GameObject* cube5 = new Cube(glm::vec3(-1, -0.4, -30), glm::vec3(1, 0, 0), 0.8f);
+	GameObject* cube6 = new Cube(glm::vec3(0, -0.7, -35), glm::vec3(1, 0, 0), 0.8f);
+	GameObject* cube7 = new Cube(glm::vec3(1, -0.4, -40), glm::vec3(1, 0, 0), 0.8f);
+	GameObject* cube8 = new Cube(glm::vec3(-1, -0.4, -45), glm::vec3(1, 0, 0), 0.8f);
 
 	//Bowling Lane -- Constructor - position, color, size
-	GameObject* bowling_lane = new Bowling_Lane(glm::vec3(0, -1, 0), glm::vec3(0, 1, 0), 0.2f, 20.0f, 1.0f, 100.0f);
+	GameObject* bowling_lane = new Bowling_Lane(glm::vec3(0, -1, -40), glm::vec3(0, 1, 0), 0.2f, 30.0f, 1.0f, 500.0f);
 
 	// Gutter -- Constructor - position, color, size
-	GameObject* gutter1 = new Gutter(glm::vec3(1.3, -0.4, 0), glm::vec3(1, 1, 1), 1.0f);
-	GameObject* gutter2 = new Gutter(glm::vec3(-1.3, -0.4, 0), glm::vec3(1, 1, 1), 1.0f);
+	GameObject* gutter1 = new Gutter(glm::vec3(1.3, 0.0, -40), glm::vec3(1, 1, 1), 1.0f, 0.2, 1.5, 100.0f);
+	GameObject* gutter2 = new Gutter(glm::vec3(-1.3, 0.0, -40), glm::vec3(1, 1, 1), 1.0f, 0.2, 1.5, 100.0f);
 
 	
 	//constructor - position, colour, radius, moveSpeed
-	objects.push_back(cube2);
 	objects.push_back(sphere1);
+
+	objects.push_back(cube1);
+	objects.push_back(cube2);
+	objects.push_back(cube3);
+	objects.push_back(cube4);
+	objects.push_back(cube5);
+	objects.push_back(cube6);
+	objects.push_back(cube7);
+	objects.push_back(cube8);
+	
 	//Bowling Lane ---
 	objects.push_back(bowling_lane);
 	//Gutter --
@@ -65,7 +81,7 @@ void setup(void)
 
 }
 
-//Drawing
+//Drawing aaaaaaaa
 void drawScene()
 {
 	glEnable(GL_DEPTH_TEST);
@@ -112,14 +128,22 @@ void CameraMovement()
 	{
 		camX += 0.1f;
 	}
+	if (GameObject::keys['q'] == true)
+	{
+		camY += 0.1f;
+	}
+	if (GameObject::keys['e'] == true)
+	{
+		camY -= 0.1f;
+	}
 }
 
 void Objects_Passed_To_CollideCheck()
 {
 	Collision_Calculations Collision;
-	for (int i = 0; i < 3; i++)
+	for (int i = 0; i < objects.size(); i++)
 	{
-		for (int j = 0; j < 3; j++)
+		for (int j = 0; j < objects.size(); j++)
 		{
 			if (i == j)
 			{
@@ -127,32 +151,22 @@ void Objects_Passed_To_CollideCheck()
 			}
 			else
 			{
-				if (static_cast<Sphere*>(objects[i]) && static_cast<Bowling_Lane*>(objects[j]))
+				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Bowling_Lane*>(objects[j]))
 				{
 					Collision.Sphere_AABB(objects[i], objects[j]);
 					//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
 				}
-				if (static_cast<Sphere*>(objects[i]) && static_cast<Cube*>(objects[j]))
+				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Cube*>(objects[j]))
 				{
 					Collision.Sphere_AABB(objects[i], objects[j]);
 					//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
 				}
-				if (static_cast<Cube*>(objects[i]) && static_cast<Sphere*>(objects[j]))
+				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Gutter*>(objects[j]))
 				{
+					Collision.Sphere_AABB(objects[i], objects[j]);
+					//std::cout << " SPHERE - GUTTER" << std::endl;
+				}
 
-				}
-				if (static_cast<Bowling_Lane*>(objects[i]) && static_cast<Sphere*>(objects[j]))
-				{
-
-				}
-				if (static_cast<Cube*>(objects[i]) && static_cast<Bowling_Lane*>(objects[j]))
-				{
-					Collision.AABB_AABB(objects[i], objects[j]);
-				}
-				if (static_cast<Bowling_Lane*>(objects[i]) && static_cast<Cube*>(objects[j]))
-				{
-					
-				}
 			}
 			
 		}

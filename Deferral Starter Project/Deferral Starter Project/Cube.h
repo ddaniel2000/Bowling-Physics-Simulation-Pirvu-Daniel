@@ -13,6 +13,7 @@ public:
 	float sizeX;
 	float sizeY;
 	float sizeZ;
+
 	// -- constructors/destructors --
 	Cube(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - size 1)
 	Cube(glm::vec3 pos, float _size);  //pass in a position and size

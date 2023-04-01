@@ -11,6 +11,7 @@
 #include "Sphere.h"
 #include "Bowling_Lane.h"
 #include "Collision_Forces.h"
+#include "Gutter.h"
 
 
 class Collision_Calculations

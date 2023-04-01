@@ -21,6 +21,7 @@ public:
 	glm::vec3 newVelocity;
 	float force;
 	float drag;
+	glm::vec3 gravity;
 
 	Sphere_Collider* collider;
 
