@@ -15,17 +15,6 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 	Collider* c = a->GetCollider();
 	Collider* d = b->GetCollider();
 
-
-	//c->position = a->position;
-	//d->position = b->position;
-
-	//restitusion for impulse calculation
-	float restitution = 0.01f;
-
-	//calculating normal
-	glm::vec3 Normal = (c->position - d->position);
-	glm::vec3 CollisionNormal = glm::normalize(Normal);
-
 	//x axis colission
 	bool collisionX = c->position.x + (c->sizeX /2 ) >= d->position.x - (d->sizeX /2) && d->position.x + (d->sizeX / 2) >= c->position.x - (c->sizeX /2);
 	//y axis colission
@@ -34,17 +23,11 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 	bool collisionZ = c->position.z + (c->sizeZ / 2) >= d->position.z - (d->sizeZ / 2) && d->position.z + (d->sizeZ / 2) >= c->position.z - (c->sizeZ / 2);
 
 
-
-
 	//checking if all axis collide
 	if (collisionX && collisionY && collisionZ)
 	{
 		b->colour = glm::vec3(1, 0, 0);
-		/*if (dynamic_cast<Bowling_Lane*>(a) && dynamic_cast<Cube*>(b))
-		{
 
-			std::cout << " BOWLING_LANE - Cube" << std::endl;
-		}*/
 	}
 	else
 	{
@@ -64,13 +47,6 @@ void Collision_Calculations::Sphere_Sphere(GameObject* a, GameObject* b)
 	//getting variables from gameobjects
 	Collider* c = a->GetCollider();
 	Collider* d = b->GetCollider();
-
-	//restitusion for impulse calculation
-	float restitution = 0.5f;
-
-	//calculating normal
-	glm::vec3 Normal = (d->position - c->position);
-	glm::vec3 CollisionNormal = glm::normalize(Normal);
 
 	//Checking if sphere distance between each other is smaller than both radii, if yes, collision detected
 	if (pow(c->position.x - d->position.x, 2) + pow(c->position.y - d->position.y, 2) + pow(c->position.z - d->position.z, 2) <= pow(d->radius + d->radius, 2))
@@ -109,7 +85,7 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 		
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Cube*>(b))
 		{
-			/*a->colour = glm::vec3(1, 0, 0);*/
+			
 			//if the sphere collide with any of the cubes
 			//The sphere position is set to 0,0,0
 			//The velocity on z axis is 0
@@ -119,7 +95,7 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 		}
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Bowling_Lane*>(b))
 		{
-			/*b->colour = glm::vec3(1, 0, 0);*/
+			
 			std::cout << " SPHERE - BOWLING_LANE" << std::endl;
 			if (GameObject::keys[32] == true)
 			{
@@ -130,7 +106,7 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 		}
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Gutter*>(b))
 		{
-			/*b->colour = glm::vec3(1, 0, 0);*/
+			
 			std::cout << " SPHERE - GUTTER" << std::endl;
 
 			//push the sphere back up 
@@ -146,8 +122,7 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 	}
 	else
 	{
-	/*	a->colour = glm::vec3(0, 1, 1);
-		b->colour = glm::vec3(0, 1, 1);*/
+
 		return;
 	}
 
@@ -159,14 +134,6 @@ void Collision_Calculations::AABB_Sphere(GameObject* a, GameObject* b)
 	//getting variables from gameobjects
 	Collider* c = a->GetCollider();
 	Collider* d = b->GetCollider();
-
-	//restitusion for impulse calculation
-	float restitution = 0.5f;
-
-	//calculating normal
-	glm::vec3 Normal = (d->position - c->position);
-	glm::vec3 CollisionNormal = glm::normalize(Normal);
-
 
 	float closest_x = std::fmax(c->position.x - (c->sizeX / 2), std::fmin(d->position.x, c->position.x + (c->sizeX / 2)));
 	float closest_y = std::fmax(c->position.y - (c->sizeY / 2), std::fmin(d->position.y, c->position.y + (c->sizeY / 2)));

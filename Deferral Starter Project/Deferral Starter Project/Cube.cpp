@@ -39,11 +39,7 @@ void Cube::Draw()
 	glPushMatrix();
 		glTranslatef(position.x, position.y, position.z);
 		glColor3f(colour.r, colour.g, colour.b);
-		//glRotatef(45, 1.0f, 2, 0);
-		//glScalef(1, 2.5, 1);
 		glutSolidCube(size);
-	
-		//glutWireCube(size); //- if you'd rather see through it
 	glPopMatrix();
 
 
@@ -51,6 +47,6 @@ void Cube::Draw()
 
 void Cube::Update(float deltaTime)
 {
-	//Cubes are static at the moment so nothing changes for them
+	
 	collider->position = position;
 }

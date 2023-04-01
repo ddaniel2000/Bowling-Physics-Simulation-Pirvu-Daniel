@@ -25,10 +25,6 @@ float camZTest= 0.0f;
 int mouseX;
 int mouseY;
 
-/*
-	MAKE SURE TO READ THE "HELPFUL DRAWING CODE.TXT" FILE AS PART OF THIS PROJECT TOO!
-*/
-
 // -- global variables --
 vector<GameObject*> objects;
 int oldTimeSinceStart;
@@ -181,15 +177,8 @@ void idle()
 	newTimeSinceStart = glutGet(GLUT_ELAPSED_TIME);
 
 	float deltaTime = (newTimeSinceStart - oldTimeSinceStart) / 1000.0f;
-	//cout << "Delta Time (seconds): " << deltaTime << endl; //- if you want to check the delta time
 
 	Objects_Passed_To_CollideCheck();
-
-	//if( (static_cast<Bowling_Lane*>(objects[2])) && (static_cast<Cube*>(objects[0])) )
-	//{
-	//	Collision.AABB_AABB(objects[2], objects[0]);
-	//}
-
 
 	CameraMovement();
 
@@ -219,9 +208,7 @@ void CleanUp()
 void keyInputDown(unsigned char key, int x, int y)
 {
 	GameObject::keys[key] = true;
-	//If you want to see keys pressed printed to the console
-	//std::cout << "Key pressed: " << key << std::endl;
-	
+
 	switch (key)
 	{
 	case 27: // Esc key
@@ -236,22 +223,19 @@ void keyInputDown(unsigned char key, int x, int y)
 void keyInputUp(unsigned char key, int x, int y)
 {
 	GameObject::keys[key] = false;
-	//If you want to see keys pressed printed to the console
-	//std::cout << "Key lifted: " << key << std::endl;
+
 }
 
 void keySpecialDown(int key, int x, int y)
 {
 	GameObject::specialKeys[key] = true;
-	//If you want to see keys pressed printed to the console
-	//std::cout << "Special Key pressed: " << key << std::endl;
+
 }
 
 void keySpecialUp(int key, int x, int y)
 {
 	GameObject::specialKeys[key] = false;
-	//If you want to see keys pressed printed to the console
-	//std::cout << "Special Key lifted: " << key << std::endl;
+
 }
 
 

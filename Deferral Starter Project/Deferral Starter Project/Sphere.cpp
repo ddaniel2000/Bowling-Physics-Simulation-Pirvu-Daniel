@@ -2,25 +2,6 @@
 #include <iostream>
 
 
-//We can either hard code the values in GameObject (like in Sphere())
-//or
-//We can use the GameEngine constructors to fill the values ( like in Sphere(x, y, z, radius, speed))
-//Sphere::Sphere(): GameObject()
-//{
-//	radius = 1.0f;
-//	moveSpeed = 5.0f;
-//	mass = 1.0f;
-//	//force = 0.0f;
-//}
-//
-//Sphere::Sphere(glm::vec3 pos, float _radius, float _moveSpeed)
-//	:GameObject(pos) //note the use of GameObject constructor
-//{
-//	radius = _radius;
-//	moveSpeed = _moveSpeed;
-//	mass = 1.0f;
-//}
-
 Sphere::Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed, float _mass):
 	GameObject(pos, col) //note the use of GameObject constructor
 {
@@ -51,7 +32,7 @@ void Sphere::Draw()
 		glTranslatef(position.x, position.y, position.z);
 		glColor3f(colour.r, colour.g, colour.b);
 		glutSolidSphere(radius, 10, 10); //if you'd rather it shows solid
-	//glutWireSphere(radius, 10, 10);
+
 	glPopMatrix();
 
 	// Lines rendered from origin to all axis
@@ -100,20 +81,14 @@ void Sphere::Movement(float deltaTime)
 	if (GameObject::keys['f'] == true)
 		totalForce.z -= 50;
 
-
-	//Jump & land with gravity 
-
-
 	collider->position = position;
-	//std::cout <<"x=" << newVelocity.x << " " << "y="<< newVelocity.y << " " << "z=" << newVelocity.z << std::endl;
+	
 }
 
 void Sphere::CalculateForces(float _deltaTime)
 {
-	//totalForce = glm::vec3(0, 0, 0) * mass; //no gravity force
-	//totalForce = glm::vec3(0, -0.1f, 0) * mass;   // adding gravity to the object +gravity -9.8f
 
-		//eulers to calculate velocity and new position
+	//eulers to calculate velocity and new position
 	acceleration = totalForce / mass;
 
 	newVelocity = velocity + (acceleration) * _deltaTime - velocity * drag - gravity;
@@ -125,9 +100,7 @@ void Sphere::CalculateForces(float _deltaTime)
 	velocity = newVelocity;
 	position = newPosition;
 
-	//std::cout << "sphere x =" << position.x<<std::endl;
-	
-	//std::cout << totalForce.x << " " << totalForce.y << " " << totalForce.z  << " acceleration: " << acceleration.x << " " << acceleration.y << " " << acceleration.z << std::endl;
+
 	ResetForce();
 	
 }

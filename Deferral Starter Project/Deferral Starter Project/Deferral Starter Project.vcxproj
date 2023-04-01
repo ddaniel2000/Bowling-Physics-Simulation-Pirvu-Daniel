@@ -128,7 +128,6 @@
   <ItemGroup>
     <ClCompile Include="AABB_Collider.cpp" />
     <ClCompile Include="Bowling_Lane.cpp" />
-    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision_Calculations.cpp" />
     <ClCompile Include="Collision_Forces.cpp" />
@@ -138,19 +137,16 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Sphere_Collider.cpp" />
-    <ClCompile Include="Sized_AABB_Collider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AABB_Collider.h" />
     <ClInclude Include="Bowling_Lane.h" />
-    <ClInclude Include="Camera.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision_Calculations.h" />
     <ClInclude Include="Collision_Forces.h" />
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gutter.h" />
-    <ClInclude Include="Sized_AABB_Collider.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Sphere_Collider.h" />
   </ItemGroup>
