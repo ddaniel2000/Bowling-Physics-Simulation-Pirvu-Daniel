@@ -9,6 +9,7 @@
 #include "Sphere.h"
 #include "Bowling_Lane.h"
 #include "Gutter.h"
+#include "Pin.h"
 
 #include "Collider.h"
 #include "Sphere_Collider.h"
@@ -30,6 +31,12 @@ vector<GameObject*> objects;
 int oldTimeSinceStart;
 int newTimeSinceStart;
 
+glm::vec3 pin1_StartPos;
+glm::vec3 pin2_StartPos;
+glm::vec3 pin3_StartPos;
+glm::vec3 pin4_StartPos;
+glm::vec3 pin5_StartPos;
+glm::vec3 sphere_StartPos;
 // Initialization
 void setup(void)
 {
@@ -38,15 +45,21 @@ void setup(void)
 	//Create objects and place them in the objects vector
 	//If they aren't in the objects vector, they will not be drawn / updated!
 
-	GameObject* sphere1 = new Sphere(glm::vec3(0, 0, 0), glm::vec3(0, 1, 1), 0.5f, 40.0f, 0.3f);
+	GameObject* sphere1 = new Sphere(glm::vec3(0, 0, 0), glm::vec3(0, 1, 1), 0.5f, 250.0f, 5.0f);
 	GameObject* cube1 = new Cube(glm::vec3(-1, -0.6, -10), glm::vec3(1, 0, 0), 0.3f);
 	GameObject* cube2 = new Cube(glm::vec3(0, -0.6, -15), glm::vec3(1, 0, 0), 0.3f);
 	GameObject* cube3 = new Cube(glm::vec3(1, -0.6, -20), glm::vec3(1, 0, 0), 0.3f);
 	GameObject* cube4 = new Cube(glm::vec3(-1, -0.6, -25), glm::vec3(1, 0, 0), 0.3f);
 	GameObject* cube5 = new Cube(glm::vec3(-1, -0.4, -30), glm::vec3(1, 0, 0), 0.8f);
-	GameObject* cube6 = new Cube(glm::vec3(0, -0.7, -35), glm::vec3(1, 0, 0), 0.8f);
+	GameObject* cube6 = new Cube(glm::vec3(0, -0.7, -35), glm::vec3(1, 0, 0), 0.3f);
 	GameObject* cube7 = new Cube(glm::vec3(1, -0.4, -40), glm::vec3(1, 0, 0), 0.8f);
 	GameObject* cube8 = new Cube(glm::vec3(-1, -0.4, -45), glm::vec3(1, 0, 0), 0.8f);
+
+	GameObject* pin1 = new Pin(glm::vec3(0, -0.5, -50), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
+	GameObject* pin2 = new Pin(glm::vec3(0.3, -0.5, -51), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
+	GameObject* pin3 = new Pin(glm::vec3(-0.3, -0.5, -51), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
+	GameObject* pin4 = new Pin(glm::vec3(-0.6, -0.5, -52), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
+	GameObject* pin5 = new Pin(glm::vec3(0.6, -0.5, -52), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
 
 	//Bowling Lane -- Constructor - position, color, size
 	GameObject* bowling_lane = new Bowling_Lane(glm::vec3(0, -1, -40), glm::vec3(0, 1, 0), 0.2f, 30.0f, 1.0f, 500.0f);
@@ -70,11 +83,21 @@ void setup(void)
 	
 	//Bowling Lane ---
 	objects.push_back(bowling_lane);
+	objects.push_back(pin1);
+	objects.push_back(pin2);
+	objects.push_back(pin3);
+	objects.push_back(pin4);
+	objects.push_back(pin5);
 	//Gutter --
 	objects.push_back(gutter1);
 	objects.push_back(gutter2);
 
-
+	pin1_StartPos = objects[10]->position;
+	pin2_StartPos = objects[11]->position;
+	pin3_StartPos = objects[12]->position;
+	pin4_StartPos = objects[13]->position;
+	pin5_StartPos = objects[14]->position;
+	sphere_StartPos = objects[0]->position;
 }
 
 //Drawing aaaaaaaa
@@ -89,8 +112,8 @@ void drawScene()
 
 	// Position the objects for viewing
 	gluLookAt(
-		camX, camY, camZ, // - eye
-		camX, camY, camZTest,  // - center
+		0, 3, camZ, // - eye
+		0, 0, camZTest,  // - center
 		0.0, 1.0, 0.0); // - up
 
 	//Draw all our game objects
@@ -105,16 +128,18 @@ void drawScene()
 
 void CameraMovement()
 {
+	camZ = objects[0]->position.z + 5;
+	camZTest = camZ -5;
 	// Move Camera
-	if (GameObject::keys['w'] == true)
-	{
-		camZ -= 0.1f;
-		camZTest -= 0.1f;
-	}
-	if (GameObject::keys['a'] == true)
-	{
-		camX -= 0.1f;
-	}
+	//if (GameObject::keys['w'] == true)
+	//{
+	//	camZ -= 0.1f;
+	//	camZTest -= 0.1f;
+	//}
+	//if (GameObject::keys['a'] == true)
+	//{
+	//	camX -= 0.1f;
+	//}
 	if (GameObject::keys['s'] == true)
 	{
 		camZ += 0.1f;
@@ -133,6 +158,27 @@ void CameraMovement()
 		camY -= 0.1f;
 	}
 }
+
+glm::vec3 vec0(0, 0, 0);
+void ResetGame()
+{
+	if (GameObject::keys['r'] == true)
+	{
+		dynamic_cast<Pin*>(objects[10])->position = pin1_StartPos;
+		dynamic_cast<Pin*>(objects[10])->velocity = vec0;
+		dynamic_cast<Pin*>(objects[11])->position = pin2_StartPos;
+		dynamic_cast<Pin*>(objects[11])->velocity = vec0;
+		dynamic_cast<Pin*>(objects[12])->position = pin3_StartPos;
+		dynamic_cast<Pin*>(objects[12])->velocity = vec0;
+		dynamic_cast<Pin*>(objects[13])->position = pin4_StartPos;
+		dynamic_cast<Pin*>(objects[13])->velocity = vec0;
+		dynamic_cast<Pin*>(objects[14])->position = pin5_StartPos;
+		dynamic_cast<Pin*>(objects[14])->velocity = vec0;
+		dynamic_cast<Sphere*>(objects[0])->position = sphere_StartPos;
+		dynamic_cast<Sphere*>(objects[0])->velocity = vec0;
+	}
+}
+
 
 void Objects_Passed_To_CollideCheck()
 {
@@ -162,11 +208,28 @@ void Objects_Passed_To_CollideCheck()
 					Collision.Sphere_AABB(objects[i], objects[j]);
 					//std::cout << " SPHERE - GUTTER" << std::endl;
 				}
+				if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Bowling_Lane*>(objects[j]))
+				{
+					Collision.AABB_AABB(objects[i], objects[j]);
+					//std::cout << " SPHERE - GUTTER" << std::endl;
+				}
+				//if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Gutter*>(objects[j]))
+				//{
+				//	Collision.AABB_AABB(objects[i], objects[j]);
+				//	//std::cout << " SPHERE - GUTTER" << std::endl;
+				//}
+				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Pin*>(objects[j]))
+				{
+					Collision.Sphere_AABB(objects[i], objects[j]);
+					//std::cout << " SPHERE - Pin" << std::endl;
+				}
 
 			}
 			
 		}
 	}
+
+	
 }
 
 //Called when nothing else is happening (such as rendering)
@@ -181,6 +244,7 @@ void idle()
 	Objects_Passed_To_CollideCheck();
 
 	CameraMovement();
+	ResetGame();
 
 	//Update all our game objects
 	for (int i = 0; i < objects.size(); ++i)

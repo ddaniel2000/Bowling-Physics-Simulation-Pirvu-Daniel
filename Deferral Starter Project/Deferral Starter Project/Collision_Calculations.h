@@ -12,6 +12,7 @@
 #include "Bowling_Lane.h"
 #include "Collision_Forces.h"
 #include "Gutter.h"
+#include "Pin.h"
 
 
 class Collision_Calculations

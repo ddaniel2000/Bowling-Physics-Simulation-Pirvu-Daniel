@@ -68,10 +68,10 @@ void Sphere::Movement(float deltaTime)
 {
 
 	//moving bullet by increasing velocity to the corresponding axis
-	if (GameObject::specialKeys[GLUT_KEY_UP] == true)
-		totalForce.z -= moveSpeed * deltaTime;
-	if (GameObject::specialKeys[GLUT_KEY_DOWN] == true)
-		totalForce.z += moveSpeed * deltaTime;
+	//if (GameObject::specialKeys[GLUT_KEY_UP] == true)
+	//	totalForce.z -= moveSpeed * deltaTime;
+	//if (GameObject::specialKeys[GLUT_KEY_DOWN] == true)
+	//	totalForce.z += moveSpeed * deltaTime;
 	if (GameObject::specialKeys[GLUT_KEY_LEFT] == true)
 		totalForce.x -= moveSpeed * deltaTime;
 	if (GameObject::specialKeys[GLUT_KEY_RIGHT] == true)
@@ -102,11 +102,16 @@ void Sphere::CalculateForces(float _deltaTime)
 
 
 	ResetForce();
-	
+	//std::cout << Force().x << Force().z;
 }
 
 void  Sphere::ResetForce()
 {
 	totalForce = glm::vec3(0, 0, 0);
 	
+}
+
+glm::vec3 Sphere::Force()
+{
+	return mass * acceleration;
 }

@@ -31,6 +31,7 @@ AABB_Collider* Gutter::GetCollider()
 
 void Gutter::Update(float deltaTime)
 {
+	//std::cout << "aaaaaaaaaaaaaaa";
 	collider->position = position;
 	// Move UP the gutters by pressing C
 	if (GameObject::keys['c'] == true )

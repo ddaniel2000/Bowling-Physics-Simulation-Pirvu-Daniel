@@ -23,6 +23,7 @@ public:
 	float drag;
 	glm::vec3 gravity;
 
+
 	Sphere_Collider* collider;
 
 	glm::vec3 totalForce;
@@ -44,4 +45,5 @@ public:
 	void Movement(float _deltaTime);
 	void CalculateForces(float _deltaTime);
 	void ResetForce();
+	glm::vec3 Force();
 };

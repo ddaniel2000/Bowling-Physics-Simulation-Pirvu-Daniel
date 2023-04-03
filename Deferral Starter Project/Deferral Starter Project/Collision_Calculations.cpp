@@ -26,12 +26,29 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 	//checking if all axis collide
 	if (collisionX && collisionY && collisionZ)
 	{
-		b->colour = glm::vec3(1, 0, 0);
+		
+		if (dynamic_cast<Pin*>(a) && dynamic_cast<Bowling_Lane*>(b))
+		{
+			dynamic_cast<Pin*>(a)->velocity.y -= dynamic_cast<Pin*>(a)->velocity.y - dynamic_cast<Pin*>(a)->gravity.y;
+		}
 
+		if (dynamic_cast<Pin*>(a) && dynamic_cast<Gutter*>(b))
+		{
+			if (dynamic_cast<Gutter*>(b) && b->position.x > 1)
+			{
+				dynamic_cast<Pin*>(a)->velocity.x -= (dynamic_cast<Pin*>(a)->velocity.x) + 1;
+				std::cout << " Pin - Gutter-Dreapta" << std::endl;
+			}
+			if (dynamic_cast<Gutter*>(b) && b->position.x < 1)
+			{
+				dynamic_cast<Pin*>(a)->velocity.x += (dynamic_cast<Pin*>(a)->velocity.x) + 1;
+				std::cout << " Pin - Gutter-Stanga" << std::endl;
+			}
+		}
 	}
 	else
 	{
-		b->colour = glm::vec3(0, 1, 1);
+		
 		return;
 	}
 }
@@ -79,6 +96,12 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 	// Calculate the distance between the closest point and the center of the sphere
 	float distance = std::sqrt(std::pow(closest_x - c->position.x, 2) + std::pow(closest_y - c->position.y, 2) + std::pow(closest_z - c->position.z, 2));
 
+
+	glm::vec3 Normal = (d->position - c->position);
+	glm::vec3 CollisionNormal = glm::normalize(Normal);
+
+	//restitusion for impulse calculation
+	float restitution = 0.5f;
 	// Check if the distance is less than or equal to the radius of the sphere
 	if (distance <= c->radius)
 	{
@@ -91,15 +114,15 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 			//The velocity on z axis is 0
 			a->position = glm::vec3(0, 0, 0);
 			dynamic_cast<Sphere*>(a)->velocity.z = 0;
-			std::cout << " SPHERE - Cube" << std::endl;
+			//std::cout << " SPHERE - Cube" << std::endl;
 		}
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Bowling_Lane*>(b))
 		{
 			
-			std::cout << " SPHERE - BOWLING_LANE" << std::endl;
+			//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
 			if (GameObject::keys[32] == true)
 			{
-				dynamic_cast<Sphere*>(a)->totalForce.y += 30;
+				dynamic_cast<Sphere*>(a)->totalForce.y += 500;
 			}
 			//push the sphere back up 
 			dynamic_cast<Sphere*>(a)->velocity.y -= dynamic_cast<Sphere*>(a)->velocity.y - dynamic_cast<Sphere*>(a)->gravity.y;
@@ -107,18 +130,37 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Gutter*>(b))
 		{
 			
-			std::cout << " SPHERE - GUTTER" << std::endl;
+			//std::cout << " SPHERE - GUTTER" << std::endl;
 
 			//push the sphere back up 
 			if (dynamic_cast<Gutter*>(b) && b->position.x > 1)
 			{
 				dynamic_cast<Sphere*>(a)->velocity.x -= (dynamic_cast<Sphere*>(a)->velocity.x) + 2;
+				std::cout << " SPHERE - Gutter-Dreapta" << std::endl;
 			}
 			if (dynamic_cast<Gutter*>(b) && b->position.x < 1)
 			{
 				dynamic_cast<Sphere*>(a)->velocity.x += (dynamic_cast<Sphere*>(a)->velocity.x) + 2;
+				std::cout << " SPHERE - Gutter-Stanga" << std::endl;
 			}
 		}
+		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Pin*>(b))
+		{
+			
+			//When the ball z coordinate is < than -40, then it will start the calculations for this response
+			if (dynamic_cast<Sphere*>(a)->position.z < -40)
+			{
+				glm::vec3 relativeVelocity = dynamic_cast<Sphere*>(a)->velocity - dynamic_cast<Pin*>(b)->velocity;
+				float impulseScalar = -(1 + restitution) * glm::dot(relativeVelocity, CollisionNormal) / ((1 / dynamic_cast<Sphere*>(a)->mass) + (1 / dynamic_cast<Pin*>(b)->mass));
+				std::cout << " Pin - Sphere" << std::endl;
+
+
+				dynamic_cast<Pin*>(b)->velocity = relativeVelocity - impulseScalar / dynamic_cast<Pin*>(b)->mass * CollisionNormal;
+
+			}
+		}
+		//b->colour = glm::vec3(1, 0, 0);
+
 	}
 	else
 	{
@@ -145,12 +187,11 @@ void Collision_Calculations::AABB_Sphere(GameObject* a, GameObject* b)
 	// Check if the distance is less than or equal to the radius of the sphere
 	if (distance <= d->radius)
 	{
-		b->colour = glm::vec3(1, 0, 0);
-		
+
 	}
 	else
 	{
-		b->colour = glm::vec3(0, 1, 1);
+		//b->colour = glm::vec3(0, 1, 1);
 		return;
 	}
 

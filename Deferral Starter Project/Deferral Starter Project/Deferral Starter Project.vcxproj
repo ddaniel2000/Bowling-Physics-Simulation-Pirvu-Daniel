@@ -135,6 +135,7 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Gutter.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Pin.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Sphere_Collider.cpp" />
   </ItemGroup>
@@ -147,6 +148,7 @@
     <ClInclude Include="Cube.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gutter.h" />
+    <ClInclude Include="Pin.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Sphere_Collider.h" />
   </ItemGroup>
