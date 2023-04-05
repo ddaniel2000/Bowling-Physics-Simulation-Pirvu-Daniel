@@ -79,7 +79,11 @@ void Sphere::Movement(float deltaTime)
 
 	//Go Forward with big foce
 	if (GameObject::keys['f'] == true)
+	{
+		
 		totalForce.z -= 50;
+	}
+		
 
 	collider->position = position;
 	

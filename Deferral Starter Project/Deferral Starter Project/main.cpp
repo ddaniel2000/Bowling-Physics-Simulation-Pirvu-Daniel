@@ -112,7 +112,7 @@ void drawScene()
 
 	// Position the objects for viewing
 	gluLookAt(
-		0, 3, camZ, // - eye
+		0, 2, camZ, // - eye
 		0, 0, camZTest,  // - center
 		0.0, 1.0, 0.0); // - up
 
@@ -128,8 +128,8 @@ void drawScene()
 
 void CameraMovement()
 {
-	camZ = objects[0]->position.z + 5;
-	camZTest = camZ -5;
+	camZ = objects[0]->position.z + 3;
+	camZTest = camZ -3;
 	// Move Camera
 	//if (GameObject::keys['w'] == true)
 	//{
@@ -140,23 +140,23 @@ void CameraMovement()
 	//{
 	//	camX -= 0.1f;
 	//}
-	if (GameObject::keys['s'] == true)
-	{
-		camZ += 0.1f;
-		camZTest += 0.1f;
-	}
-	if (GameObject::keys['d'] == true)
-	{
-		camX += 0.1f;
-	}
-	if (GameObject::keys['q'] == true)
-	{
-		camY += 0.1f;
-	}
-	if (GameObject::keys['e'] == true)
-	{
-		camY -= 0.1f;
-	}
+	//if (GameObject::keys['s'] == true)
+	//{
+	//	camZ += 0.1f;
+	//	camZTest += 0.1f;
+	//}
+	//if (GameObject::keys['d'] == true)
+	//{
+	//	camX += 0.1f;
+	//}
+	//if (GameObject::keys['q'] == true)
+	//{
+	//	camY += 0.1f;
+	//}
+	//if (GameObject::keys['e'] == true)
+	//{
+	//	camY -= 0.1f;
+	//}
 }
 
 glm::vec3 vec0(0, 0, 0);
@@ -213,16 +213,26 @@ void Objects_Passed_To_CollideCheck()
 					Collision.AABB_AABB(objects[i], objects[j]);
 					//std::cout << " SPHERE - GUTTER" << std::endl;
 				}
-				//if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Gutter*>(objects[j]))
-				//{
-				//	Collision.AABB_AABB(objects[i], objects[j]);
-				//	//std::cout << " SPHERE - GUTTER" << std::endl;
-				//}
-				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Pin*>(objects[j]))
+				if (dynamic_cast<Sphere*>(objects[0])->position.z < -40)
 				{
-					Collision.Sphere_AABB(objects[i], objects[j]);
-					//std::cout << " SPHERE - Pin" << std::endl;
+					if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Gutter*>(objects[j]))
+					{
+						Collision.AABB_AABB(objects[i], objects[j]);
+						//std::cout << " SPHERE - GUTTER" << std::endl;
+					}
+					if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Pin*>(objects[j]))
+					{
+						Collision.Sphere_AABB(objects[i], objects[j]);
+						//std::cout << " SPHERE - Pin" << std::endl;
+					}
+					if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Pin*>(objects[j]))
+					{
+						Collision.AABB_AABB(objects[i], objects[j]);
+						//std::cout << " SPHERE - GUTTER" << std::endl;
+					}
 				}
+
+
 
 			}
 			
