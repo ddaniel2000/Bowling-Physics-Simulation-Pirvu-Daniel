@@ -28,15 +28,10 @@ int mouseY;
 
 // -- global variables --
 vector<GameObject*> objects;
+vector<glm::vec3> startPos;
 int oldTimeSinceStart;
 int newTimeSinceStart;
 
-glm::vec3 pin1_StartPos;
-glm::vec3 pin2_StartPos;
-glm::vec3 pin3_StartPos;
-glm::vec3 pin4_StartPos;
-glm::vec3 pin5_StartPos;
-glm::vec3 sphere_StartPos;
 // Initialization
 void setup(void)
 {
@@ -92,12 +87,15 @@ void setup(void)
 	objects.push_back(gutter1);
 	objects.push_back(gutter2);
 
-	pin1_StartPos = objects[10]->position;
-	pin2_StartPos = objects[11]->position;
-	pin3_StartPos = objects[12]->position;
-	pin4_StartPos = objects[13]->position;
-	pin5_StartPos = objects[14]->position;
-	sphere_StartPos = objects[0]->position;
+
+	for (int i = 0; i < objects.size(); ++i)
+	{
+		if (dynamic_cast<Pin*>(objects[i]))
+		{
+			startPos.push_back(dynamic_cast<Pin*>(objects[i])->position);
+			//std::cout << dynamic_cast<Pin*>(objects[i])->position.x << " " << dynamic_cast<Pin*>(objects[i])->position.y << " " << dynamic_cast<Pin*>(objects[i])->position.z << std::endl;
+		}
+	}
 }
 
 //Drawing aaaaaaaa
@@ -159,23 +157,30 @@ void CameraMovement()
 	//}
 }
 
+
 glm::vec3 vec0(0, 0, 0);
 void ResetGame()
 {
 	if (GameObject::keys['r'] == true)
 	{
-		dynamic_cast<Pin*>(objects[10])->position = pin1_StartPos;
-		dynamic_cast<Pin*>(objects[10])->velocity = vec0;
-		dynamic_cast<Pin*>(objects[11])->position = pin2_StartPos;
-		dynamic_cast<Pin*>(objects[11])->velocity = vec0;
-		dynamic_cast<Pin*>(objects[12])->position = pin3_StartPos;
-		dynamic_cast<Pin*>(objects[12])->velocity = vec0;
-		dynamic_cast<Pin*>(objects[13])->position = pin4_StartPos;
-		dynamic_cast<Pin*>(objects[13])->velocity = vec0;
-		dynamic_cast<Pin*>(objects[14])->position = pin5_StartPos;
-		dynamic_cast<Pin*>(objects[14])->velocity = vec0;
-		dynamic_cast<Sphere*>(objects[0])->position = sphere_StartPos;
-		dynamic_cast<Sphere*>(objects[0])->velocity = vec0;
+		int j = -1;
+		for (int i = 0; i < objects.size(); ++i)
+		{
+			
+			if (dynamic_cast<Pin*>(objects[i]))
+			{
+				j++;
+				dynamic_cast<Pin*>(objects[i])->position = startPos[j];
+				dynamic_cast<Pin*>(objects[i])->velocity = vec0;
+				//std::cout << j << std::endl;
+			}
+			if (dynamic_cast<Sphere*>(objects[i]))
+			{
+				dynamic_cast<Sphere*>(objects[i])->position = vec0;
+				dynamic_cast<Sphere*>(objects[i])->velocity = vec0;
+			}
+		}
+
 	}
 }
 
@@ -187,55 +192,76 @@ void Objects_Passed_To_CollideCheck()
 	{
 		for (int j = 0; j < objects.size(); j++)
 		{
+			//if (objects[i] == dynamic_cast<Sphere*>(objects[i]))
+			//{
+			//	Collision.Sphere_AABB(objects[i], objects[j]);
+			//	if (objects[i] == dynamic_cast<Sphere*>(objects[i]) && (objects[j] == dynamic_cast<Bowling_Lane*>(objects[j])))
+			//	{
+			//		std::cout << "Sphere-BowlingLane" << std::endl;
+			//	}
+			//	if (objects[i] == dynamic_cast<Sphere*>(objects[i]) && (objects[j] == dynamic_cast<Gutter*>(objects[j])))
+			//	{
+			//		std::cout << "Sphere-Gutter" << std::endl;
+			//	}
+			//	if (objects[i] == dynamic_cast<Sphere*>(objects[i]) && (objects[j] == dynamic_cast<Pin*>(objects[j])))
+			//	{
+			//		std::cout << "Sphere-Pin" << std::endl;
+			//	}
+			//}
+			//else if (objects[i] == dynamic_cast<Sphere*>(objects[i]))
+			//{
+			//	Collision.AABB_AABB(objects[i], objects[j]);
+			//	if (objects[i] == dynamic_cast<Pin*>(objects[i]) && (objects[j] == dynamic_cast<Bowling_Lane*>(objects[j])))
+			//	{
+			//		std::cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<std::endl;
+			//	}
+
+			//}
 			if (i == j)
 			{
-				//std::cout << " NULL " << std::endl;
+				
 			}
 			else
 			{
 				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Bowling_Lane*>(objects[j]))
 				{
 					Collision.Sphere_AABB(objects[i], objects[j]);
-					//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
+					
 				}
 				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Cube*>(objects[j]))
 				{
 					Collision.Sphere_AABB(objects[i], objects[j]);
-					//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
+					
 				}
 				if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Gutter*>(objects[j]))
 				{
 					Collision.Sphere_AABB(objects[i], objects[j]);
-					//std::cout << " SPHERE - GUTTER" << std::endl;
+					
 				}
 				if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Bowling_Lane*>(objects[j]))
 				{
 					Collision.AABB_AABB(objects[i], objects[j]);
-					//std::cout << " SPHERE - GUTTER" << std::endl;
+				
 				}
 				if (dynamic_cast<Sphere*>(objects[0])->position.z < -40)
 				{
 					if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Gutter*>(objects[j]))
 					{
 						Collision.AABB_AABB(objects[i], objects[j]);
-						//std::cout << " SPHERE - GUTTER" << std::endl;
+						
 					}
 					if (dynamic_cast<Sphere*>(objects[i]) && dynamic_cast<Pin*>(objects[j]))
 					{
 						Collision.Sphere_AABB(objects[i], objects[j]);
-						//std::cout << " SPHERE - Pin" << std::endl;
+						
 					}
 					if (dynamic_cast<Pin*>(objects[i]) && dynamic_cast<Pin*>(objects[j]))
 					{
 						Collision.AABB_AABB(objects[i], objects[j]);
-						//std::cout << " SPHERE - GUTTER" << std::endl;
+						
 					}
 				}
-
-
-
-			}
-			
+			}			
 		}
 	}
 

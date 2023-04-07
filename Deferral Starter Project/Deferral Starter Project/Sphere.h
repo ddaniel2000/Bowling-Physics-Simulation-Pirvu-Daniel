@@ -22,7 +22,9 @@ public:
 	float force;
 	float drag;
 	glm::vec3 gravity;
-
+	double x, y, z; // position
+	double r; // radius
+	double ax, ay, az; // angular velocity vector
 
 	Sphere_Collider* collider;
 
@@ -33,6 +35,8 @@ public:
 	Sphere(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - radius 1 - move speed - 1)
 	Sphere(glm::vec3 pos, float _radius, float _moveSpeed);  //pass in a position, radius and movespeed
 	Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed, float _mass); //pass in a position, colour, radius, move speed and mass
+
+
 	~Sphere() {}; //default destructor
 
 	Sphere_Collider* GetCollider();//getting variables for collision calculation class
@@ -46,4 +50,5 @@ public:
 	void CalculateForces(float _deltaTime);
 	void ResetForce();
 	glm::vec3 Force();
+	void AngularVelodity(float _deltaTime);
 };

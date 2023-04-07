@@ -14,6 +14,8 @@ Sphere::Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed, fl
 	drag = 0.01f;
 	gravity = glm::vec3(0, 0.02f, 0);
 
+
+
 	moveSpeed = _moveSpeed;
 	collider = new Sphere_Collider(radius, position);
 }
@@ -60,10 +62,48 @@ void Sphere::Update(float deltaTime)
 	CalculateForces(deltaTime);
 
 	collider->position = position;
-	
-	////impulse calculation
+
+	AngularVelodity(deltaTime);
 }
 
+void Sphere::AngularVelodity(float _deltaTime)
+{
+	
+	//std::cout << "Sphere at (" << position.x << ", " << position.y << ", " << position.z << ") with radius " << radius << std::endl;
+	
+
+	// calculate the angle of rotation based on the angular velocity and time step
+	double angle = sqrt(ax * ax + ay * ay + az * az) * _deltaTime;
+
+	// if the angle is zero, no rotation is needed
+	if (angle == 0) return;
+
+	// normalize the angular velocity vector
+	double len = sqrt(ax * ax + ay * ay + az * az);
+	ax /= len;
+	ay /= len;
+	az /= len;
+
+	// calculate the rotation matrix
+	double c = cos(angle);
+	double s = sin(angle);
+	double ux = ax;
+	double uy = ay;
+	double uz = az;
+	double rotation[3][3] = {
+		{c + ux * ux * (1 - c),   ux * uy * (1 - c) - uz * s, ux * uz * (1 - c) + uy * s},
+		{uy * ux * (1 - c) + uz * s, c + uy * uy * (1 - c),   uy * uz * (1 - c) - ux * s},
+		{uz * ux * (1 - c) - uy * s, uz * uy * (1 - c) + ux * s, c + uz * uz * (1 - c)}
+	};
+
+	double x_new = rotation[0][0] * x + rotation[0][1] * y + rotation[0][2] * z;
+	double y_new = rotation[1][0] * x + rotation[1][1] * y + rotation[1][2] * z;
+	double z_new = rotation[2][0] * x + rotation[2][1] * y + rotation[2][2] * z;
+	x = x_new;
+	y = y_new;
+	z = z_new;
+
+}
 void Sphere::Movement(float deltaTime)
 {
 

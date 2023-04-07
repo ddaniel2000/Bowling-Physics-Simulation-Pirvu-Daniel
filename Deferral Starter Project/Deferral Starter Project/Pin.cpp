@@ -1,4 +1,5 @@
 #include "Pin.h"
+#include <iostream>
 
 Pin::Pin(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ, float _moveSpeed, float _mass) :
 	GameObject(pos, col) //note the use of GameObject constructor
@@ -44,7 +45,7 @@ AABB_Collider* Pin::GetCollider()
 
 void Pin::Update(float deltaTime)
 {
-
+	//std::cout << position.y << std::endl;
 	CalculateForces(deltaTime);
 
 	//Cubes are static at the moment so nothing changes for them
@@ -52,7 +53,7 @@ void Pin::Update(float deltaTime)
 }
 void Pin::CalculateForces(float _deltaTime)
 {
-
+	
 	//eulers to calculate velocity and new position
 	acceleration = totalForce / mass;
 

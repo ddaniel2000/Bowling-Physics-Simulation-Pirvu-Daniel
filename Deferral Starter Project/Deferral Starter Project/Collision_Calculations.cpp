@@ -43,23 +43,24 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 			if (dynamic_cast<Gutter*>(b) && b->position.x > 1)
 			{
 				dynamic_cast<Pin*>(a)->velocity.x -= (dynamic_cast<Pin*>(a)->velocity.x) + 1;
-				std::cout << " Pin - Gutter-Dreapta" << std::endl;
+				//std::cout << " Pin - Gutter-Dreapta" << std::endl;
 			}
 			if (dynamic_cast<Gutter*>(b) && b->position.x < 1)
 			{
 				dynamic_cast<Pin*>(a)->velocity.x -= (dynamic_cast<Pin*>(a)->velocity.x) - 1;
-				std::cout << " Pin - Gutter-Stanga" << std::endl;
+				//std::cout << " Pin - Gutter-Stanga" << std::endl;
 			}
 		}
 
 		if (dynamic_cast<Pin*>(a) && dynamic_cast<Pin*>(b))
 		{
-			// REDO -----
+			
+			glm::vec3 relativeVelocity = dynamic_cast<Pin*>(a)->velocity - dynamic_cast<Pin*>(b)->velocity;
+			float impulseScalar = -(1 + restitution) * glm::dot(relativeVelocity, CollisionNormal) / ((1 / dynamic_cast<Pin*>(a)->mass) + (1 / dynamic_cast<Pin*>(b)->mass));
+			//std::cout << " Pin - Sphere" << std::endl;
 
-			//glm::vec3 relativeVelocity = dynamic_cast<Pin*>(a)->velocity - dynamic_cast<Pin*>(b)->velocity ;
-			//float impulseScalar = -(1 + restitution) * glm::dot(relativeVelocity, CollisionNormal) / ((1 / dynamic_cast<Pin*>(a)->mass) + (1 / dynamic_cast<Pin*>(b)->mass));
-			////std::cout << " Pin - Sphere" << std::endl;
-			//dynamic_cast<Pin*>(a)->velocity = relativeVelocity - impulseScalar /150 / dynamic_cast<Pin*>(a)->mass * CollisionNormal;
+
+			dynamic_cast<Pin*>(b)->velocity = relativeVelocity - impulseScalar/2  / dynamic_cast<Pin*>(b)->mass * CollisionNormal;
 		}
 	}
 	else
@@ -152,12 +153,12 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 			if (dynamic_cast<Gutter*>(b) && b->position.x > 1)
 			{
 				dynamic_cast<Sphere*>(a)->velocity.x -= (dynamic_cast<Sphere*>(a)->velocity.x) + 1;
-				std::cout << " SPHERE - Gutter-Dreapta" << std::endl;
+				//std::cout << " SPHERE - Gutter-Dreapta" << std::endl;
 			}
 			if (dynamic_cast<Gutter*>(b) && b->position.x < 1)
 			{
 				dynamic_cast<Sphere*>(a)->velocity.x += (dynamic_cast<Sphere*>(a)->velocity.x) + 1;
-				std::cout << " SPHERE - Gutter-Stanga" << std::endl;
+				//std::cout << " SPHERE - Gutter-Stanga" << std::endl;
 			}
 		}
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Pin*>(b))
@@ -165,7 +166,7 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 			
 			glm::vec3 relativeVelocity = dynamic_cast<Sphere*>(a)->velocity - dynamic_cast<Pin*>(b)->velocity;
 			float impulseScalar = -(1 + restitution) * glm::dot(relativeVelocity, CollisionNormal) / ((1 / dynamic_cast<Sphere*>(a)->mass) + (1 / dynamic_cast<Pin*>(b)->mass));
-			std::cout << " Pin - Sphere" << std::endl;
+			//std::cout << " Pin - Sphere" << std::endl;
 
 
 			dynamic_cast<Pin*>(b)->velocity = relativeVelocity - impulseScalar / dynamic_cast<Pin*>(b)->mass * CollisionNormal;
