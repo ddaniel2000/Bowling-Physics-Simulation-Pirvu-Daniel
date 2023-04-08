@@ -16,8 +16,8 @@ Good luck to hit the pins at the end of the lane";<br />
 
 
 Things that could be improved: <br />
--Finish implement Rigid Body <br />
--Add Angluar Rotation <br />
+- Finish implement Rigid Body <br />
+- Add Angluar Rotation <br />
 - Make the code easy to scale  <br />
 - Make the code easy to read and understand <br />
 - Make the code modular <br />
