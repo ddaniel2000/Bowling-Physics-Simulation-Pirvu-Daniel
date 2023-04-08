@@ -12,6 +12,14 @@ Collision_Calculations::~Collision_Calculations()
 }
 
 /* -- Collision Check for AABB - AABB --*/
+
+/// <summary>
+/// 
+/// The AABB-AABB check collision
+/// 
+/// </summary>
+/// <param name="AABB"></param>
+/// <param name="AABB"></param>
 void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 {
 
@@ -48,24 +56,37 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 
 		}
 
+		/// <summary>
+		/// The PINS will bounce of the GUTTERS by using an impulse and mass on velocity.x
+		/// </summary>
+		/// <Pin="a"></param>
+		/// <Gutter="b"></param>
 		if (dynamic_cast<Pin*>(a) && dynamic_cast<Gutter*>(b))
 		{
-
+			float impulse = 0.8;
 			if (dynamic_cast<Gutter*>(b) && b->position.x > 1)
 			{
 
-				dynamic_cast<Pin*>(a)->velocity.x -= (dynamic_cast<Pin*>(a)->velocity.x) + 1;
+				dynamic_cast<Pin*>(a)->velocity.x -= impulse * dynamic_cast<Pin*>(a)->mass;
 				
 			}
 			if (dynamic_cast<Gutter*>(b) && b->position.x < 1)
 			{
 
-				dynamic_cast<Pin*>(a)->velocity.x -= (dynamic_cast<Pin*>(a)->velocity.x) - 1;
+				dynamic_cast<Pin*>(a)->velocity.x += impulse * dynamic_cast<Pin*>(a)->mass;
 				
 			}
 
 		}
 
+		/// <summary>
+		/// 
+		/// The Pins will interact with each other by using a relative Velocity (substracting velocityies) & Impulse
+		/// The restitutuin is the coeficient of bouncyness
+		/// 
+		/// </summary>
+		/// <param name="Pin"></param>
+		/// <param name="Pin"></param>
 		if (dynamic_cast<Pin*>(a) && dynamic_cast<Pin*>(b))
 		{
 
@@ -84,6 +105,12 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 }
 
 /* -- Collision Check for SPHERE - AABB --*/
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="Sphere"></param>
+/// <param name="AABB"></param>
 void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 {
 
@@ -113,26 +140,38 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 		// If Sphere & Cube collide
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Cube*>(b))
 		{
-			
-			/* 
-			The sphere collide with any of the cubes
-			The sphere position is set to 0,0,0
-			The Sphere velocity on z axis is 0
-			*/
 
+			/// <summary>
+			/// 
+			/// The SPHERE collide with any of the CUBES
+			/// The SPHERE position is set to 0, 0, 0
+			/// The SPHERE velocity on z axis is 0
+			/// 
+			/// </summary>
+			/// <Sphere->position="a"></param>
+			/// <Sphere->velocity="b"></param>
 			a->position = glm::vec3(0, 0, 0);
 			dynamic_cast<Sphere*>(a)->velocity.z = 0;
 			
 		}
 
+		/// <summary>
+		/// 
+		/// The SPHERE will stay on the BOWLING LANE by reversing the velocity
+		/// 
+		/// The SPHERE can JUMP by pressing "Space" using an impulse that modify the velocity on y axis
+		/// 
+		/// </summary>
+		/// <SPhere ="a"></param>
+		/// <Bowling_Ball ="b"></param>
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Bowling_Lane*>(b))
 		{
-			
+			float impulse = 0.5;
 			// Press Space
 			if (GameObject::keys[32] == true)
 			{
 				// Jump by adding to Velocity on Y axis
-				dynamic_cast<Sphere*>(a)->velocity.y += 0.8;
+				dynamic_cast<Sphere*>(a)->velocity.y += impulse * dynamic_cast<Sphere*>(a)->mass;
 
 			}
 			else
@@ -145,6 +184,13 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 
 		}
 
+		/// <summary>
+		/// 
+		///	Bouce the Sphere of the Gutters
+		/// 
+		/// </summary>
+		/// <Sphere="a"></param>
+		/// <Gatter="b"></param>
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Gutter*>(b))
 		{
 
@@ -176,7 +222,7 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 			// RelativeVelocity between objects
 			glm::vec3 relativeVelocity = dynamic_cast<Sphere*>(a)->velocity - dynamic_cast<Pin*>(b)->velocity;
 
-			// Scaling Impulse
+			// Impulse Scalar
 			float impulseScalar = -(1 + restitution) * glm::dot(relativeVelocity, CollisionNormal) / ((1 / dynamic_cast<Sphere*>(a)->mass) + (1 / dynamic_cast<Pin*>(b)->mass));
 
 			// Push the Pin from the Sphere
@@ -198,6 +244,14 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 }
 
 /* -- Collision Check for AABB - SPHERE --*/
+
+/// <summary>
+/// 
+/// The AABB-Sphere collision check
+/// 
+/// </summary>
+/// <param name="AABB"></param>
+/// <param name="Sphere"></param>
 void Collision_Calculations::AABB_Sphere(GameObject* a, GameObject* b)
 {
 
@@ -227,6 +281,14 @@ void Collision_Calculations::AABB_Sphere(GameObject* a, GameObject* b)
 }
 
 /* -- Collision Check for SPHERE - SPHERE --*/
+
+/// <summary>
+/// 
+/// The Sphere-Sphere collision check
+/// 
+/// </summary>
+/// <param name="Sphere"></param>
+/// <param name="Sphere"></param>
 void Collision_Calculations::Sphere_Sphere(GameObject* a, GameObject* b)
 {
 	//getting variables from gameobjects

@@ -15,6 +15,8 @@
 #include "Sphere_Collider.h"
 #include "AABB_Collider.h"
 #include "Collision_Calculations.h"
+#include "Rigid_Body.h"
+#include "RB_Cube.h"
 
 using namespace std;
 
@@ -157,7 +159,10 @@ void drawScene()
 }
 
 /* -- Camera movement --*/
-// The camera is following the Z axis of the Sphere with a little offset
+
+/// <summary>
+/// The camera is following the Z axis of the Sphere with a little offset
+/// </summary>
 void CameraMovement()
 {
 	camZ = objects[0]->position.z + 3;
@@ -165,11 +170,17 @@ void CameraMovement()
 
 }
 
-// Vector3.Zero
+/// <summary>
+/// Vector3.Zero
+/// </summary>
 glm::vec3 vec0(0, 0, 0);
 
+
 /* -- Restart the game --*/
-// By pressing R key, the position & velocity of the PINS and SPHERE is reseted
+
+/// <summary>
+/// By pressing R key, the position & velocity of the PINS and SPHERE is reseted
+/// </summary>
 void ResetGame()
 {
 
@@ -210,7 +221,10 @@ void ResetGame()
 }
 
 /* -- Objects are sent to Collide Check--*/
-// Objects are choosen and sent to their specific Collide Check 
+
+/// <summary>
+/// Objects are choosen and sent to their specific Collide Check 
+/// </summary>
 void Objects_Passed_To_CollideCheck()
 {
 	// Instantiate the class Collision_calculations

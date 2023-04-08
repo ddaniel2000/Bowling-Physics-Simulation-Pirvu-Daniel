@@ -53,5 +53,5 @@ public:
 	void CalculateForces(float _deltaTime);
 	void ResetForce();
 	glm::vec3 Force();
-	void AngularVelodity(float _deltaTime);
+	void AngularVelocity(float _deltaTime);
 };

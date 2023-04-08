@@ -136,6 +136,8 @@
     <ClCompile Include="Gutter.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Pin.cpp" />
+    <ClCompile Include="RB_Cube.cpp" />
+    <ClCompile Include="Rigid_Body.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Sphere_Collider.cpp" />
   </ItemGroup>
@@ -149,6 +151,8 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Gutter.h" />
     <ClInclude Include="Pin.h" />
+    <ClInclude Include="RB_Cube.h" />
+    <ClInclude Include="Rigid_Body.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Sphere_Collider.h" />
   </ItemGroup>

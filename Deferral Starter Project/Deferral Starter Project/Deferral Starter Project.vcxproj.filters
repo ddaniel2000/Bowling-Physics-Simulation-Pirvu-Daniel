@@ -51,6 +51,12 @@
     <ClCompile Include="Pin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Rigid_Body.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RB_Cube.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Cube.h">
@@ -84,6 +90,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pin.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigid_Body.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RB_Cube.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

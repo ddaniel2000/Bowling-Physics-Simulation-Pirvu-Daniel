@@ -74,12 +74,17 @@ void Sphere::Update(float deltaTime)
 	/* -- Functions --  */
 	Movement(deltaTime);
 	CalculateForces(deltaTime);
-	AngularVelodity(deltaTime);
+	AngularVelocity(deltaTime);
 
 }
 
 /* -- Calculate Angulat Velocity -- */
-void Sphere::AngularVelodity(float _deltaTime)
+
+/// <summary>
+/// Calculate Angulat Velocity
+/// </summary>
+/// <param name="_deltaTime"></param>
+void Sphere::AngularVelocity(float _deltaTime)
 {
 	
 	// calculate the angle of rotation based on the angular velocity and time step
@@ -117,6 +122,11 @@ void Sphere::AngularVelodity(float _deltaTime)
 
 
 /* -- Movement funtion --*/ 
+
+/// <summary>
+/// Modify the movement of the camera
+/// </summary>
+/// <param name="deltaTime"></param>
 void Sphere::Movement(float deltaTime)
 {
 
@@ -128,7 +138,7 @@ void Sphere::Movement(float deltaTime)
 
 
 	// Go Forward with big foce
-	if (GameObject::keys['f'] == true)
+	if (GameObject::specialKeys[GLUT_KEY_UP] == true)
 	{
 		
 		totalForce.z -= moveSpeed * deltaTime * mass + 8;
@@ -152,7 +162,11 @@ void Sphere::Movement(float deltaTime)
 }
 
 /* -- Calculate all the forces -- */
-// the forces are used to move the object
+
+/// <summary>
+/// All the physics forces that are used to move the object
+/// </summary>
+/// <param name="_deltaTime"></param>
 void Sphere::CalculateForces(float _deltaTime)
 {
 
@@ -175,7 +189,10 @@ void Sphere::CalculateForces(float _deltaTime)
 }
 
 /* -- Reset the total force -- */
-// The force is reseted to 0 not to be added coninuously
+
+/// <summary>
+/// The force is reseted to 0 not to be added coninuously
+/// </summary>
 void  Sphere::ResetForce()
 {
 
@@ -183,6 +200,10 @@ void  Sphere::ResetForce()
 	
 }
 
+/// <summary>
+/// Return Force = (mass * acceleration)
+/// </summary>
+/// <returns></returns>
 glm::vec3 Sphere::Force()
 {
 
