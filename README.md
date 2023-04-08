@@ -1,15 +1,15 @@
 # Bowling-Physics-Simulation-Pirvu-Daniel
 
-"START BY PRESSING R 
-!! DISABLE CAPS_LOCK !!
-"----------------------" 
-MOVE RIGHT - -> (RIGHT ARROW)
-MOVE LEFT - <-(LEFT ARROW)
-PUSH FORWARD - UP ARROW
-PUSH 1 TIME WITH FORCE - G
-JUMP - Space
-RESET - R 
-GUTTER ON - C 
-GUTTER OFF - X 
+"START BY PRESSING R <br />
+!! DISABLE CAPS_LOCK !! <br />
+"----------------------" <br />
+MOVE RIGHT - -> (RIGHT ARROW) <br />
+MOVE LEFT - <-(LEFT ARROW) <br />
+PUSH FORWARD - UP ARROW <br />
+PUSH 1 TIME WITH FORCE - G <br />
+JUMP - Space <br />
+RESET - R <br />
+GUTTER ON - C <br />
+GUTTER OFF - X <br />
 
-Good luck to hit the pins at the end of the lane";
+Good luck to hit the pins at the end of the lane";<br />
