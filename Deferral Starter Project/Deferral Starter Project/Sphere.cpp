@@ -5,24 +5,27 @@
 Sphere::Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed, float _mass):
 	GameObject(pos, col) //note the use of GameObject constructor
 {
+
 	radius = _radius;
 	mass = _mass;
 	position = pos;
+	moveSpeed = _moveSpeed;
 	velocity = glm::vec3(0, 0, 0);
 	acceleration = glm::vec3(0, 0, 0);
 	totalForce = glm::vec3(0, 0, 0);
 	drag = 0.01f;
-	airFriction = 0.001f; //it is used when the sphere is falling/jumping
+
+	// It is used when the sphere is falling/jumping
+	airFriction = 0.001f; 
 	gravity = glm::vec3(0, -9.81f, 0);
 
-	
-
-	moveSpeed = _moveSpeed;
+	// Sending radius & position to the collider
 	collider = new Sphere_Collider(radius, position);
+
 }
 
 
-
+// Get Collider
 Sphere_Collider* Sphere::GetCollider()
 {
 	return collider;
@@ -38,7 +41,9 @@ void Sphere::Draw()
 
 	glPopMatrix();
 
-	// Lines rendered from origin to all axis
+	/* -- Lines rendered from origin to all axis --*/
+
+	// Debug line axis for Sphere
 	glPushMatrix();
 	glBegin(GL_LINES);
 
@@ -55,25 +60,28 @@ void Sphere::Draw()
 	glVertex3f(position.x, position.y, position.z + 1); //positive z axis
 	glEnd();
 	glPopMatrix();
+
+	/* -------------------------------------------*/
+
 }
 
+/* -- Update -- */
 void Sphere::Update(float deltaTime)
 {
-
-	Movement(deltaTime);
-	CalculateForces(deltaTime);
-
+	// Pass the position to the collider every frame 
 	collider->position = position;
 
+	/* -- Functions --  */
+	Movement(deltaTime);
+	CalculateForces(deltaTime);
 	AngularVelodity(deltaTime);
+
 }
 
+/* -- Calculate Angulat Velocity -- */
 void Sphere::AngularVelodity(float _deltaTime)
 {
 	
-	//std::cout << "Sphere at (" << position.x << ", " << position.y << ", " << position.z << ") with radius " << radius << std::endl;
-	
-
 	// calculate the angle of rotation based on the angular velocity and time step
 	double angle = sqrt(ax * ax + ay * ay + az * az) * _deltaTime;
 
@@ -106,29 +114,45 @@ void Sphere::AngularVelodity(float _deltaTime)
 	z = z_new;
 
 }
+
+
+/* -- Movement funtion --*/ 
 void Sphere::Movement(float deltaTime)
 {
 
 	//moving bullet by increasing velocity to the corresponding axis
-
 	if (GameObject::specialKeys[GLUT_KEY_LEFT] == true)
-		totalForce.x -= moveSpeed * deltaTime;
+		totalForce.x -= moveSpeed * deltaTime * mass;
 	if (GameObject::specialKeys[GLUT_KEY_RIGHT] == true)
-		totalForce.x += moveSpeed * deltaTime;
+		totalForce.x += moveSpeed * deltaTime * mass;
 
 
-	//Go Forward with big foce
+	// Go Forward with big foce
 	if (GameObject::keys['f'] == true)
 	{
 		
-		totalForce.z -= 2;
+		totalForce.z -= moveSpeed * deltaTime * mass + 8;
+
+	}
+
+	// Push the object 1 time
+	if (GameObject::keys['g'] == true)
+	{
+
+		// Don't push the object if the velocity is not small enough
+		if (velocity.z > -2)
+		{
+
+			totalForce.z = -700;
+
+		}
+
 	}
 		
-
-	collider->position = position;
-	
 }
 
+/* -- Calculate all the forces -- */
+// the forces are used to move the object
 void Sphere::CalculateForces(float _deltaTime)
 {
 
@@ -138,7 +162,7 @@ void Sphere::CalculateForces(float _deltaTime)
 	newVelocity = velocity + (acceleration) * _deltaTime - velocity * drag + gravity * drag;
 	newPosition = position + (velocity) * _deltaTime;
 
-	newTotalForce = totalForce - totalForce * drag;
+	newTotalForce = totalForce - totalForce ;
 	totalForce = newTotalForce;
 
 	velocity = newVelocity;
@@ -147,16 +171,21 @@ void Sphere::CalculateForces(float _deltaTime)
 	impulse = velocity * mass;
 
 	ResetForce();
-	//std::cout << Force().x << Force().z;
+
 }
 
+/* -- Reset the total force -- */
+// The force is reseted to 0 not to be added coninuously
 void  Sphere::ResetForce()
 {
+
 	totalForce = glm::vec3(0, 0, 0);
 	
 }
 
 glm::vec3 Sphere::Force()
 {
+
 	return mass * acceleration;
+
 }

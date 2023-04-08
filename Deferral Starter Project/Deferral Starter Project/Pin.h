@@ -9,19 +9,19 @@ class Pin : public GameObject
 {
 public:
 	// -- variables --
+	float mass;
 	float size;
+	float drag;
+	float force;
 	float sizeX;
 	float sizeY;
 	float sizeZ;
 
-	float moveSpeed;
-	float mass;
-	glm::vec3 newPosition;
-	glm::vec3 acceleration;
 	glm::vec3 velocity;
+	glm::vec3 newPosition;
 	glm::vec3 newVelocity;
-	float force;
-	float drag;
+	glm::vec3 acceleration;
+
 	glm::vec3 gravity;
 
 	AABB_Collider* collider;
@@ -29,6 +29,7 @@ public:
 	glm::vec3 totalForce;
 	glm::vec3 newTotalForce;
 
+	float moveSpeed;
 
 	// -- constructors/destructors --
 	Pin(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - size 1)

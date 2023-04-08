@@ -3,6 +3,7 @@
 Bowling_Lane::Bowling_Lane(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ,float _mass) :
 	GameObject(pos, col) //note the use of GameObject constructor
 {
+
 	position = pos;
 	size = _size;
 	sizeX = _sizeX;
@@ -10,10 +11,11 @@ Bowling_Lane::Bowling_Lane(glm::vec3 pos, glm::vec3 col, float _size, float _siz
 	sizeZ = _sizeZ;
 	mass = _mass;
 
-	
-
-	//getting variables into collider 
+	// Sending size, sizeX, sizeY, sizeZ & position
 	collider = new AABB_Collider(size, sizeX, sizeY, sizeZ, position);
+
+	// sizeX, sizeY, sizeZ are used to calculate the collider's boundaries
+
 }
 
 
@@ -29,15 +31,21 @@ void Bowling_Lane::Draw()
 	glutSolidCube(size);
 
 	glPopMatrix();
+
 }
 
 AABB_Collider* Bowling_Lane::GetCollider()
 {
+
 	return collider;
+
 }
 
+/* -- Update --*/
 void Bowling_Lane::Update(float deltaTime)
 {
+
 	//Cubes are static at the moment so nothing changes for them
 	collider->position = position;
+
 }

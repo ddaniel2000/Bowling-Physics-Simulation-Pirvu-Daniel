@@ -18,11 +18,14 @@ public:
 
 	AABB_Collider* collider;
 	// -- constructors/destructors --
-	//Gutter(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - size 1)
 	//Gutter(glm::vec3 pos, float _size);  //pass in a position and size
+	//Gutter(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - size 1)
+
 	Gutter(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ, float _mass); //pass in a position, colour and size
 	~Gutter() {}; //default destructor
+
 	AABB_Collider* GetCollider();
+
 	// -- functions -- 
 	//Need to give definions to GameObject's pure virtual functions
 	virtual void Draw();

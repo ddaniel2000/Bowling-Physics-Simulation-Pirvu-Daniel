@@ -4,6 +4,7 @@
 //We can either hard code the values in GameObject (like in Cube())
 //or
 //We can use the GameEngine constructors to fill the values ( like in Cube(x, y, z, size))
+
 //Cube::Cube() : GameObject()
 //{
 //	size = 1.0f;
@@ -13,7 +14,9 @@
 //Cube::Cube(glm::vec3 pos, float _size)
 //	:GameObject(pos) //note the use of GameObject constructor
 //{
+//
 //	size = _size;
+//
 //}
 
 Cube::Cube(glm::vec3 pos, glm::vec3 col, float _size, float _mass):

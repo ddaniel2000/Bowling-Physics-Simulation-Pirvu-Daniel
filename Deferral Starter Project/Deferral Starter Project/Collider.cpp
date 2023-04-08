@@ -4,7 +4,7 @@ Collider::Collider()
 {
 }
 
-//cube construcot
+// Cube construcot
 Collider::Collider(float _size, glm::vec3 _position)
 {
 	size = _size;
@@ -19,6 +19,7 @@ Collider::Collider(float _size,float _sizeX, float _sizeY, float _sizeZ, glm::ve
 	sizeY = _sizeY; //Height
 }
 
+ // Deconstructor
 Collider::~Collider()
 {
 

@@ -11,31 +11,33 @@ Collision_Calculations::~Collision_Calculations()
 
 }
 
-//AABB collision checking and response
+/* -- Collision Check for AABB - AABB --*/
 void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 {
-	//cube - cube
 
-	//getting variables from gameobjects
+	// Adding variables from gameobjects
 	Collider* d = a->GetCollider();
 	Collider* c = b->GetCollider();
 
-	//x axis colission
+	// X axis colission
 	bool collisionX = c->position.x + (c->sizeX / 2) >= d->position.x - (d->sizeX / 2) && d->position.x + (d->sizeX / 2) >= c->position.x - (c->sizeX / 2);
-	//y axis colission
+	// Y axis colission
 	bool collisionY = c->position.y + (c->sizeY / 2) >= d->position.y - (d->sizeY / 2) && d->position.y + (d->sizeY / 2) >= c->position.y - (c->sizeY / 2);
-	//z axis colission
+	// Z axis colission
 	bool collisionZ = c->position.z + (c->sizeZ / 2) >= d->position.z - (d->sizeZ / 2) && d->position.z + (d->sizeZ / 2) >= c->position.z - (c->sizeZ / 2);
 
-
+	// Calculating Normal between the objects
 	glm::vec3 Normal = (d->position - c->position);
 	glm::vec3 CollisionNormal = glm::normalize(Normal);
 
-	//restitusion for impulse calculation
+	// Restitusion for impulse calculation
+	// "Bouncyness" between collisions
 	float restitution = 0.2f;
 
+	// Calculate distance between objects
 	float distance = glm::dot(d->position, c->position);
-	//checking if all axis collide
+
+	// Checking if all axis collide
 	if (collisionX && collisionY && collisionZ)
 	{
 
@@ -44,21 +46,24 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 
 			dynamic_cast<Pin*>(a)->velocity.y = !dynamic_cast<Pin*>(a)->gravity.y;
 
-
 		}
 
 		if (dynamic_cast<Pin*>(a) && dynamic_cast<Gutter*>(b))
 		{
+
 			if (dynamic_cast<Gutter*>(b) && b->position.x > 1)
 			{
+
 				dynamic_cast<Pin*>(a)->velocity.x -= (dynamic_cast<Pin*>(a)->velocity.x) + 1;
-				//std::cout << " Pin - Gutter-Dreapta" << std::endl;
+				
 			}
 			if (dynamic_cast<Gutter*>(b) && b->position.x < 1)
 			{
+
 				dynamic_cast<Pin*>(a)->velocity.x -= (dynamic_cast<Pin*>(a)->velocity.x) - 1;
-				//std::cout << " Pin - Gutter-Stanga" << std::endl;
+				
 			}
+
 		}
 
 		if (dynamic_cast<Pin*>(a) && dynamic_cast<Pin*>(b))
@@ -78,29 +83,7 @@ void Collision_Calculations::AABB_AABB(GameObject* a, GameObject* b)
 	}
 }
 
-//Collision detection + response between sphere objects
-void Collision_Calculations::Sphere_Sphere(GameObject* a, GameObject* b)
-{
-	//getting variables from gameobjects
-	Collider* c = a->GetCollider();
-	Collider* d = b->GetCollider();
-
-	//Checking if sphere distance between each other is smaller than both radii, if yes, collision detected
-	if (pow(c->position.x - d->position.x, 2) + pow(c->position.y - d->position.y, 2) + pow(c->position.z - d->position.z, 2) <= pow(d->radius + d->radius, 2))
-	{
-
-		b->colour = glm::vec3(1, 0, 0);
-
-	
-	}
-	else
-	{
-		b->colour = glm::vec3(0, 1, 1);
-		return;
-	}
-}
-
-
+/* -- Collision Check for SPHERE - AABB --*/
 void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 {
 
@@ -122,67 +105,86 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 	glm::vec3 CollisionNormal = glm::normalize(Normal);
 
 	//restitusion for impulse calculation
-	float restitution = 0.5f;
+	float restitution = 0.3f;
+
 	// Check if the distance is less than or equal to the radius of the sphere
 	if (distance <= c->radius)
 	{
-		
+		// If Sphere & Cube collide
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Cube*>(b))
 		{
 			
-			//if the sphere collide with any of the cubes
-			//The sphere position is set to 0,0,0
-			//The velocity on z axis is 0
+			/* 
+			The sphere collide with any of the cubes
+			The sphere position is set to 0,0,0
+			The Sphere velocity on z axis is 0
+			*/
+
 			a->position = glm::vec3(0, 0, 0);
 			dynamic_cast<Sphere*>(a)->velocity.z = 0;
-			//std::cout << " SPHERE - Cube" << std::endl;
+			
 		}
-
-
 
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Bowling_Lane*>(b))
 		{
 			
-			//std::cout << " SPHERE - BOWLING_LANE" << std::endl;
+			// Press Space
 			if (GameObject::keys[32] == true)
 			{
-				dynamic_cast<Sphere*>(a)->velocity.y += 3;
+				// Jump by adding to Velocity on Y axis
+				dynamic_cast<Sphere*>(a)->velocity.y += 0.8;
+
 			}
 			else
 			{
-				//push the sphere back up 
 
+				// Push the Sphere back up 
 				dynamic_cast<Sphere*>(a)->velocity.y -= dynamic_cast<Sphere*>(a)->velocity.y;
+
 			}
 
-
-			
 		}
-
-
-
 
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Gutter*>(b))
 		{
+
+			//// RelativeVelocity between objects
+			glm::vec3 relativeVelocity = dynamic_cast<Gutter*>(b)->velocity - dynamic_cast<Sphere*>(a)->velocity ;
+
+			// Scaling Impulse
+			float impulseScalar = glm::dot(relativeVelocity, CollisionNormal) + ((1 / dynamic_cast<Sphere*>(a)->mass) + (1 / dynamic_cast<Gutter*>(b)->mass));
+
+			// Push the sphere back from where it comes
+			dynamic_cast<Sphere*>(a)->velocity.x += relativeVelocity.x - impulseScalar / dynamic_cast<Sphere*>(a)->mass * -dynamic_cast<Sphere*>(a)->velocity.x;
 			
-			//std::cout << " SPHERE - GUTTER" << std::endl;
-			glm::vec3 relativeVelocity = dynamic_cast<Gutter*>(b)->velocity -dynamic_cast<Sphere*>(a)->velocity;
-			glm::vec3 impulse = dynamic_cast<Sphere*>(a)->velocity /  ((1 / dynamic_cast<Sphere*>(a)->mass) + (1 / dynamic_cast<Gutter*>(b)->mass));
+			if (dynamic_cast<Gutter*>(b)->position.x > 1)
+			{
 
-			//push the sphere back up 
-			std::cout << impulse.x << std::endl;
-			dynamic_cast<Sphere*>(a)->velocity.x = -dynamic_cast<Sphere*>(a)->velocity.x - impulse.x + dynamic_cast<Sphere*>(a)->drag;
+				dynamic_cast<Sphere*>(a)->velocity.x = -dynamic_cast<Sphere*>(a)->velocity.x - 1;
+
+			}
+			else
+			{
+
+				dynamic_cast<Sphere*>(a)->velocity.x = -dynamic_cast<Sphere*>(a)->velocity.x + 1;
+
+			}
 		}
-
 
 		if (dynamic_cast<Sphere*>(a) && dynamic_cast<Pin*>(b))
 		{
-			
-			glm::vec3 relativeVelocity =  - dynamic_cast<Pin*>(b)->velocity;
+			// RelativeVelocity between objects
+			glm::vec3 relativeVelocity = dynamic_cast<Sphere*>(a)->velocity - dynamic_cast<Pin*>(b)->velocity;
+
+			// Scaling Impulse
 			float impulseScalar = -(1 + restitution) * glm::dot(relativeVelocity, CollisionNormal) / ((1 / dynamic_cast<Sphere*>(a)->mass) + (1 / dynamic_cast<Pin*>(b)->mass));
 
+			// Push the Pin from the Sphere
 			dynamic_cast<Pin*>(b)->velocity = relativeVelocity - impulseScalar / dynamic_cast<Sphere*>(a)->mass * CollisionNormal;
-			dynamic_cast<Sphere*>(a)->velocity = relativeVelocity - impulseScalar / dynamic_cast<Pin*>(b)->mass * CollisionNormal;
+
+			// Push the Sphere from the Pin
+			//dynamic_cast<Sphere*>(a)->velocity = relativeVelocity - impulseScalar / dynamic_cast<Pin*>(b)->mass * CollisionNormal;
+
 		}
 
 	}
@@ -190,10 +192,12 @@ void Collision_Calculations::Sphere_AABB(GameObject* a, GameObject* b)
 	{
 
 		return;
+
 	}
 
 }
 
+/* -- Collision Check for AABB - SPHERE --*/
 void Collision_Calculations::AABB_Sphere(GameObject* a, GameObject* b)
 {
 
@@ -215,10 +219,33 @@ void Collision_Calculations::AABB_Sphere(GameObject* a, GameObject* b)
 	}
 	else
 	{
-		//b->colour = glm::vec3(0, 1, 1);
+	
 		return;
+		
 	}
 
 }
 
+/* -- Collision Check for SPHERE - SPHERE --*/
+void Collision_Calculations::Sphere_Sphere(GameObject* a, GameObject* b)
+{
+	//getting variables from gameobjects
+	Collider* c = a->GetCollider();
+	Collider* d = b->GetCollider();
+
+	//Checking if sphere distance between each other is smaller than both radii, if yes, collision detected
+	if (pow(c->position.x - d->position.x, 2) + pow(c->position.y - d->position.y, 2) + pow(c->position.z - d->position.z, 2) <= pow(d->radius + d->radius, 2))
+	{
+
+		b->colour = glm::vec3(1, 0, 0);
+
+	}
+	else
+	{
+
+		b->colour = glm::vec3(0, 1, 1);
+		return;
+
+	}
+}
 
