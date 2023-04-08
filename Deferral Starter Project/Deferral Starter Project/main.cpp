@@ -36,12 +36,13 @@ int newTimeSinceStart;
 void setup(void)
 {
 
-	std::cout << "START BY PRESSING R " <<std::endl 
+	std::cout << "START BY PRESSING R  " <<std::endl 
+		<< "!! DISABLE CAPS_LOCK !!" << std::endl
 		<< "----------------------" << std::endl
-		<<"MOVE RIGHT - -> (Right Arrow)" << std::endl 
-		<< "MOVE LEFT - <-(Left Arrow)" << std::endl 
+		<<"MOVE RIGHT - -> (RIGHT ARROW)" << std::endl 
+		<< "MOVE LEFT - <-(LEFT ARROW)" << std::endl 
+		<< "PUSH FORWARD - UP ARROW" << std::endl
 		<< "PUSH 1 TIME WITH FORCE - G"<< std::endl 
-		<< "PUSH FORWARD - F" << std::endl 
 		<< "JUMP - Space" << std::endl 
 		<< "RESET - R " << std::endl 
 		<< "GUTTER ON - C " << std::endl 
