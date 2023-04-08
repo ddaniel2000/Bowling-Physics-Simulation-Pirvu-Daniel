@@ -15,6 +15,15 @@ GUTTER OFF - X <br />
 Good luck to hit the pins at the end of the lane";<br />
 
 
+Things that could be improved: <br />
+-Finish implement Rigid Body <br />
+-Add Angluar Rotation <br />
+- Make the code easy to scale  <br />
+- Make the code easy to read and understand <br />
+- Make the code modular <br />
+- Too many checks in update <br />
+- Poor implemented, I could use separate classes to calculate the forces for every object, not inside of them <br />
+
 !! Just in case, i've uploaded the same exact project as .rar on google Drive for second backup because I am aware of something may go wrong ( upload date can be checked : Apr 8, 2023 )  !!<br />
 https://drive.google.com/file/d/1a2vRVoRhB4BTnNKxKmcsePmLF-s1WS_P/view?usp=share_link   <br />
 
