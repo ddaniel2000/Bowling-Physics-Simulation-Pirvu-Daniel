@@ -16,7 +16,7 @@
 //	size = _size;
 //}
 
-Cube::Cube(glm::vec3 pos, glm::vec3 col, float _size):
+Cube::Cube(glm::vec3 pos, glm::vec3 col, float _size, float _mass):
 	GameObject(pos, col) //note the use of GameObject constructor
 {
 	size = _size; 
@@ -24,7 +24,7 @@ Cube::Cube(glm::vec3 pos, glm::vec3 col, float _size):
 	sizeY = _size;
 	sizeZ = _size;
 	position = pos;
-	
+	mass = _mass;
 	
 	collider = new AABB_Collider(size,position);
 }

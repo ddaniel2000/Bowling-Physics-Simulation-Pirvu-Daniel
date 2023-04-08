@@ -35,20 +35,21 @@ int newTimeSinceStart;
 // Initialization
 void setup(void)
 {
+	std::cout << "MOVE RIGHT - -> (Right Arrow)" << std::endl << "MOVE LEFT - <-(Left Arrow)" << std::endl <<"PUSH FORWARD - F"<<std::endl<< "JUMP - Space" << std::endl << "RESET - R " << std::endl << "GUTTER ON - C " << std::endl << "GUTTER OFF - X ";
 	glClearColor(0.0, 0.0, 0.0, 0.0);
 
 	//Create objects and place them in the objects vector
 	//If they aren't in the objects vector, they will not be drawn / updated!
 
-	GameObject* sphere1 = new Sphere(glm::vec3(0, 0, 0), glm::vec3(0, 1, 1), 0.5f, 250.0f, 5.0f);
-	GameObject* cube1 = new Cube(glm::vec3(-1, -0.6, -10), glm::vec3(1, 0, 0), 0.3f);
-	GameObject* cube2 = new Cube(glm::vec3(0, -0.6, -15), glm::vec3(1, 0, 0), 0.3f);
-	GameObject* cube3 = new Cube(glm::vec3(1, -0.6, -20), glm::vec3(1, 0, 0), 0.3f);
-	GameObject* cube4 = new Cube(glm::vec3(-1, -0.6, -25), glm::vec3(1, 0, 0), 0.3f);
-	GameObject* cube5 = new Cube(glm::vec3(-1, -0.4, -30), glm::vec3(1, 0, 0), 0.8f);
-	GameObject* cube6 = new Cube(glm::vec3(0, -0.7, -35), glm::vec3(1, 0, 0), 0.3f);
-	GameObject* cube7 = new Cube(glm::vec3(1, -0.4, -40), glm::vec3(1, 0, 0), 0.8f);
-	GameObject* cube8 = new Cube(glm::vec3(-1, -0.4, -45), glm::vec3(1, 0, 0), 0.8f);
+	GameObject* sphere1 = new Sphere(glm::vec3(0, 10, 0), glm::vec3(0, 1, 1), 0.5f, 60.0f, 0.2f);
+	GameObject* cube1 = new Cube(glm::vec3(-1, -0.6, -10), glm::vec3(1, 0, 0), 0.3f, 1.0f);
+	GameObject* cube2 = new Cube(glm::vec3(0, -0.6, -15), glm::vec3(1, 0, 0), 0.3f, 1.0f);
+	GameObject* cube3 = new Cube(glm::vec3(1, -0.6, -20), glm::vec3(1, 0, 0), 0.3f, 1.0f);
+	GameObject* cube4 = new Cube(glm::vec3(-1, -0.6, -25), glm::vec3(1, 0, 0), 0.3f, 1.0f);
+	GameObject* cube5 = new Cube(glm::vec3(-1, -0.4, -30), glm::vec3(1, 0, 0), 0.8f, 1.0f);
+	GameObject* cube6 = new Cube(glm::vec3(0, -0.7, -35), glm::vec3(1, 0, 0), 0.3f, 1.0f);
+	GameObject* cube7 = new Cube(glm::vec3(1, -0.4, -40), glm::vec3(1, 0, 0), 0.8f, 1.0f);
+	GameObject* cube8 = new Cube(glm::vec3(-1, -0.4, -45), glm::vec3(1, 0, 0), 0.8f, 1.0f);
 
 	GameObject* pin1 = new Pin(glm::vec3(0, -0.5, -50), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
 	GameObject* pin2 = new Pin(glm::vec3(0.3, -0.5, -51), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
@@ -57,11 +58,11 @@ void setup(void)
 	GameObject* pin5 = new Pin(glm::vec3(0.6, -0.5, -52), glm::vec3(1, 0, 1), 0.5f, 0.7f, 1.5f, 0.7f, 10.0f, 2.0f);
 
 	//Bowling Lane -- Constructor - position, color, size
-	GameObject* bowling_lane = new Bowling_Lane(glm::vec3(0, -1, -40), glm::vec3(0, 1, 0), 0.2f, 30.0f, 1.0f, 500.0f);
+	GameObject* bowling_lane = new Bowling_Lane(glm::vec3(0, -1, -40), glm::vec3(0, 1, 0), 0.2f, 30.0f, 1.0f, 500.0f, 50.0f);
 
 	// Gutter -- Constructor - position, color, size
-	GameObject* gutter1 = new Gutter(glm::vec3(1.3, 0.0, -40), glm::vec3(1, 1, 1), 1.0f, 0.2, 1.5, 100.0f);
-	GameObject* gutter2 = new Gutter(glm::vec3(-1.3, 0.0, -40), glm::vec3(1, 1, 1), 1.0f, 0.2, 1.5, 100.0f);
+	GameObject* gutter1 = new Gutter(glm::vec3(1.3, 0.0, -40), glm::vec3(1, 1, 1), 1.0f, 0.2, 1.5, 100.0f, 100.1f);
+	GameObject* gutter2 = new Gutter(glm::vec3(-1.3, 0.0, -40), glm::vec3(1, 1, 1), 1.0f, 0.2, 1.5, 100.0f, 100.1f);
 
 	
 	//constructor - position, colour, radius, moveSpeed
@@ -88,12 +89,13 @@ void setup(void)
 	objects.push_back(gutter2);
 
 
+
 	for (int i = 0; i < objects.size(); ++i)
 	{
 		if (dynamic_cast<Pin*>(objects[i]))
 		{
 			startPos.push_back(dynamic_cast<Pin*>(objects[i])->position);
-			//std::cout << dynamic_cast<Pin*>(objects[i])->position.x << " " << dynamic_cast<Pin*>(objects[i])->position.y << " " << dynamic_cast<Pin*>(objects[i])->position.z << std::endl;
+			
 		}
 	}
 }
@@ -128,33 +130,7 @@ void CameraMovement()
 {
 	camZ = objects[0]->position.z + 3;
 	camZTest = camZ -3;
-	// Move Camera
-	//if (GameObject::keys['w'] == true)
-	//{
-	//	camZ -= 0.1f;
-	//	camZTest -= 0.1f;
-	//}
-	//if (GameObject::keys['a'] == true)
-	//{
-	//	camX -= 0.1f;
-	//}
-	//if (GameObject::keys['s'] == true)
-	//{
-	//	camZ += 0.1f;
-	//	camZTest += 0.1f;
-	//}
-	//if (GameObject::keys['d'] == true)
-	//{
-	//	camX += 0.1f;
-	//}
-	//if (GameObject::keys['q'] == true)
-	//{
-	//	camY += 0.1f;
-	//}
-	//if (GameObject::keys['e'] == true)
-	//{
-	//	camY -= 0.1f;
-	//}
+
 }
 
 
@@ -192,31 +168,6 @@ void Objects_Passed_To_CollideCheck()
 	{
 		for (int j = 0; j < objects.size(); j++)
 		{
-			//if (objects[i] == dynamic_cast<Sphere*>(objects[i]))
-			//{
-			//	Collision.Sphere_AABB(objects[i], objects[j]);
-			//	if (objects[i] == dynamic_cast<Sphere*>(objects[i]) && (objects[j] == dynamic_cast<Bowling_Lane*>(objects[j])))
-			//	{
-			//		std::cout << "Sphere-BowlingLane" << std::endl;
-			//	}
-			//	if (objects[i] == dynamic_cast<Sphere*>(objects[i]) && (objects[j] == dynamic_cast<Gutter*>(objects[j])))
-			//	{
-			//		std::cout << "Sphere-Gutter" << std::endl;
-			//	}
-			//	if (objects[i] == dynamic_cast<Sphere*>(objects[i]) && (objects[j] == dynamic_cast<Pin*>(objects[j])))
-			//	{
-			//		std::cout << "Sphere-Pin" << std::endl;
-			//	}
-			//}
-			//else if (objects[i] == dynamic_cast<Sphere*>(objects[i]))
-			//{
-			//	Collision.AABB_AABB(objects[i], objects[j]);
-			//	if (objects[i] == dynamic_cast<Pin*>(objects[i]) && (objects[j] == dynamic_cast<Bowling_Lane*>(objects[j])))
-			//	{
-			//		std::cout<<"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"<<std::endl;
-			//	}
-
-			//}
 			if (i == j)
 			{
 				
@@ -361,7 +312,7 @@ int main(int argc, char** argv)
 	//Window settings
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(500, 500);
-	glutInitWindowPosition(100, 100);
+	glutInitWindowPosition(500, 100);
 	glutCreateWindow("Basic Deferral Project");
 
 	//Callbacks

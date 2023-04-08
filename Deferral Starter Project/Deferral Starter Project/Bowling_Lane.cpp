@@ -1,6 +1,6 @@
 #include "Bowling_Lane.h"
 
-Bowling_Lane::Bowling_Lane(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ) :
+Bowling_Lane::Bowling_Lane(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ,float _mass) :
 	GameObject(pos, col) //note the use of GameObject constructor
 {
 	position = pos;
@@ -8,6 +8,9 @@ Bowling_Lane::Bowling_Lane(glm::vec3 pos, glm::vec3 col, float _size, float _siz
 	sizeX = _sizeX;
 	sizeY = _sizeY;
 	sizeZ = _sizeZ;
+	mass = _mass;
+
+	
 
 	//getting variables into collider 
 	collider = new AABB_Collider(size, sizeX, sizeY, sizeZ, position);

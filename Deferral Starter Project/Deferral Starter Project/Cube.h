@@ -13,12 +13,13 @@ public:
 	float sizeX;
 	float sizeY;
 	float sizeZ;
+	float mass;
 
 	// -- constructors/destructors --
 	Cube(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - size 1)
 	Cube(glm::vec3 pos, float _size);  //pass in a position and size
 	Cube(glm::vec3 pos, glm::vec3 col, float _size); //pass in a position, colour and size
-	Cube(glm::vec3 pos, glm::vec3 col, float _size, float _moveSpeed, float _mass); //pass in a position, colour, radius, move speed and mass
+	Cube(glm::vec3 pos, glm::vec3 col, float _size, float _mass); //pass in a position, colour, radius, move speed and mass
 
 	AABB_Collider* collider;
 

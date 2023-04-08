@@ -13,6 +13,9 @@ public:
 	float sizeX;
 	float sizeY;
 	float sizeZ;
+	float mass;
+
+	glm::vec3 velocity = glm::vec3(0, 0, 0);
 
 	AABB_Collider* collider;
 
@@ -20,7 +23,7 @@ public:
 	// -- constructors/destructors --
 	Bowling_Lane(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - size 1)
 	Bowling_Lane(glm::vec3 pos, float _size);  //pass in a position and size
-	Bowling_Lane(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ); //pass in a position, colour and size
+	Bowling_Lane(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ, float _mass); //pass in a position, colour and size
 	~Bowling_Lane() {}; //default destructor
 
 	AABB_Collider* GetCollider();

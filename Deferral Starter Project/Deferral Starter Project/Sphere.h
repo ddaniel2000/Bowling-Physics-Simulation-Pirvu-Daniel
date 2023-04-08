@@ -21,6 +21,9 @@ public:
 	glm::vec3 newVelocity;
 	float force;
 	float drag;
+	float airFriction;
+	glm::vec3 impulse;
+
 	glm::vec3 gravity;
 	double x, y, z; // position
 	double r; // radius

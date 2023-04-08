@@ -13,13 +13,14 @@ public:
 	float sizeX;
 	float sizeY;
 	float sizeZ;
-
+	float mass;
+	glm::vec3 velocity = glm::vec3(0, 0, 0);
 
 	AABB_Collider* collider;
 	// -- constructors/destructors --
 	//Gutter(); //default constructor - aka no values passed in (position at 0,0,0 - colour magenta - size 1)
 	//Gutter(glm::vec3 pos, float _size);  //pass in a position and size
-	Gutter(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ); //pass in a position, colour and size
+	Gutter(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ, float _mass); //pass in a position, colour and size
 	~Gutter() {}; //default destructor
 	AABB_Collider* GetCollider();
 	// -- functions -- 

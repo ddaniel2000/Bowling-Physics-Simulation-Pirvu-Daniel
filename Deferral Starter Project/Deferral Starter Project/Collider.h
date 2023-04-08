@@ -7,7 +7,9 @@
 
 #include "Collision_Forces.h"
 
-
+/// This is the brief description of this class
+/// 
+/// This is the detailed description of this class. More staff here
 class Collider
 {
 public:

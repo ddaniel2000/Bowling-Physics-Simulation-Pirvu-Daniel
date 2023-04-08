@@ -12,9 +12,10 @@ Sphere::Sphere(glm::vec3 pos, glm::vec3 col, float _radius, float _moveSpeed, fl
 	acceleration = glm::vec3(0, 0, 0);
 	totalForce = glm::vec3(0, 0, 0);
 	drag = 0.01f;
-	gravity = glm::vec3(0, 0.02f, 0);
+	airFriction = 0.001f; //it is used when the sphere is falling/jumping
+	gravity = glm::vec3(0, -9.81f, 0);
 
-
+	
 
 	moveSpeed = _moveSpeed;
 	collider = new Sphere_Collider(radius, position);
@@ -58,6 +59,7 @@ void Sphere::Draw()
 
 void Sphere::Update(float deltaTime)
 {
+
 	Movement(deltaTime);
 	CalculateForces(deltaTime);
 
@@ -108,20 +110,18 @@ void Sphere::Movement(float deltaTime)
 {
 
 	//moving bullet by increasing velocity to the corresponding axis
-	//if (GameObject::specialKeys[GLUT_KEY_UP] == true)
-	//	totalForce.z -= moveSpeed * deltaTime;
-	//if (GameObject::specialKeys[GLUT_KEY_DOWN] == true)
-	//	totalForce.z += moveSpeed * deltaTime;
+
 	if (GameObject::specialKeys[GLUT_KEY_LEFT] == true)
 		totalForce.x -= moveSpeed * deltaTime;
 	if (GameObject::specialKeys[GLUT_KEY_RIGHT] == true)
 		totalForce.x += moveSpeed * deltaTime;
 
+
 	//Go Forward with big foce
 	if (GameObject::keys['f'] == true)
 	{
 		
-		totalForce.z -= 50;
+		totalForce.z -= 2;
 	}
 		
 
@@ -135,7 +135,7 @@ void Sphere::CalculateForces(float _deltaTime)
 	//eulers to calculate velocity and new position
 	acceleration = totalForce / mass;
 
-	newVelocity = velocity + (acceleration) * _deltaTime - velocity * drag - gravity;
+	newVelocity = velocity + (acceleration) * _deltaTime - velocity * drag + gravity * drag;
 	newPosition = position + (velocity) * _deltaTime;
 
 	newTotalForce = totalForce - totalForce * drag;
@@ -144,6 +144,7 @@ void Sphere::CalculateForces(float _deltaTime)
 	velocity = newVelocity;
 	position = newPosition;
 
+	impulse = velocity * mass;
 
 	ResetForce();
 	//std::cout << Force().x << Force().z;

@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-Gutter::Gutter(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ) :
+Gutter::Gutter(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _sizeY, float _sizeZ,float _mass) :
 	GameObject(pos, col) //note the use of GameObject constructor
 {
 	position = pos;
@@ -10,6 +10,7 @@ Gutter::Gutter(glm::vec3 pos, glm::vec3 col, float _size, float _sizeX, float _s
 	sizeX = _sizeX;
 	sizeY = _sizeY;
 	sizeZ = _sizeZ;
+	mass = _mass;
 	
 	collider = new AABB_Collider(size, sizeX, sizeY, sizeZ, position);
 }
